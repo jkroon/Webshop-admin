@@ -1,0 +1,12 @@
+.form {width: 100%; margin: 20px}
+.form h1 {width: 100%; font-size: 20px; color: #4c4c4c}
+
+.form form {width: 100%; margin-top: 15px}
+.form label{width: 120px; font-size: 12px}
+.form input[type=text] {width: 200px}
+
+.formDivPlaceholder{width: 100%}
+.formDivPlaceholderIn {padding: 7px}
+
+.formError {background: #ffcfcf; border: 1px solid #ef8787;}
+.formError span {width: 100%; font-size: 12px; margin-top: 10px}

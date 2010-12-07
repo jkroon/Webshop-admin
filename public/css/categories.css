@@ -1,0 +1,33 @@
+h1 { float: left; width: 100%; font-size: 20px; color: #4c4c4c}
+
+.cat_outer {font-size: 12px; width: 100%; margin-top: 15px}
+.cat_overview{ width: 100%}
+.cat_overview p {width: 100%; margin: 6px 0 0 0}
+.cat_overview a {margin-top: 15px; color: #323232}
+.cat_overview span {margin: 3px 0 0 7px}
+
+.cat_add {border-left: 1px solid #b8ddf3; border-right: 1px solid #b8ddf3; border-top: 1px solid #b8ddf3; margin-top: 15px}
+.cat_add a {padding: 5px 20px 5px 7px}
+.cat_add span{color: #323232; margin: 0 0 0 5px; font-size: 11px}
+
+.cat_content {width: 100%; border: 1px solid #b5c4da}
+.cat_search {width: 100%; height: 27px; background: url('/images/list_bg.jpg') repeat-x}
+.cat_search span {color: #323232; font-weight: bold; margin: 5px 0 0 10px}
+
+.cat_inner{font-size: 11px}
+.cat_inner ul {width: 100%; height: 20px; border-bottom: 1px solid #b9d9ef; padding: 5px 0 6px 0; cursor: pointer}
+.cat_inner li {padding-left: 8px}
+.cat_inner a {color: #323232}
+.cat_inner ul:hover{background: #acd2e7}
+
+.catStats {width: 100%; height: 25px; background: #d0e9fa}
+.catStats span {margin: 5px 0 0 10px}
+.catStatsPages {margin: 0 0 0 20px}
+.catStatsPages input {width: 25px; font-size: 10px; text-align: center; margin: 3px}
+.catStatsPages p {margin: 5px 10px 0 10px}
+
+.odd {background: #edf0f9}
+.li1{width: 425px}
+
+.info_flash {width: 100%; background: #e2f3fe; border: 1px solid #a3c9e3}
+.info_flash p { padding: 10px; color: #29628a; line-height: 20px}

@@ -1,0 +1,72 @@
+body, html {margin: 0; padding: 0; font-family: arial; font-size: 12px; height: 100%;}
+body {background: url('/images/background.jpg') repeat-y center}
+
+/* Element reset */
+div,span,a,ul,li,h1,h2,h3,h4,h5,h6,p,form,fieldset,img,select,input,label {float: left; margin: 0; padding: 0; display: inline}
+img,form,fieldset {float: left; border: 0}
+li {list-style: none}
+a {text-decoration: none}
+
+/* Default classes */
+.no_float {float: none}
+
+/* Container */
+#container {margin: 0 auto; width: 800px; display: block}
+
+/* Header */
+#header {width: 100%; height: 200px; background: url('/images/header_background.jpg')}
+.logo {margin: 20px 0 0 20px}
+
+#header_login {width: 205px; height: 102px; background:url('/images/header_login.jpg'); float: right; margin: 10px}
+#header_login span {font-weight: bold; margin: 2px 0 0 7px; color: #ffffff}
+#header_login form {width: 100%; padding: 10px; height: 45px}
+.header_input {background: #e0f7a2;border: 1px solid #9d9d9d; width: 125px; padding: 2px 6px 2px 6px; font-size: 11px; margin-top: 5px}
+.header_submit {margin: 5px 0 0 5px}
+#header_login a {color: #323232; font-size: 11px; margin-left: 10px}
+#header_login a:hover {text-decoration: underline}
+
+#header_steps {margin: 15px 0 0 40px}
+
+#header_nav {float: right; height: 25px; margin: 33px 20px 0 0}
+#header_nav a {padding: 4px 15px 0 15px; font-weight: bold; height: 21px; margin-left: 10px}
+.nav_active {color: #ffffff; background: url('/images/nav_active.jpg') repeat-x}
+.nav_inactive {color: #323232; background: url('/images/nav_inactive.jpg') repeat-x}
+
+
+
+/* Left menu */
+#left_menu {width: 175px}
+
+.menu_top {width: 100%; height: 33px; background: url('/images/nav_top.jpg'); margin-top: 10px}
+.menu_top span {font-weight: bold; margin: 7px 0 0 10px; color: #ffffff}
+
+.menu_items {width: 100%; margin-bottom: 10px}
+.menu_items li {width: 100%; margin-top: 4px}
+.menu_items a {margin-left: 8px; color: #323232; font-size: 12px}
+.menu_items a:hover{text-decoration: underline}
+
+
+
+/* Content */
+#content {padding: 10px 10px 0 30px; width: 565px}
+#lightbox {border: 1px solid #cacaca}
+
+.info {width: 100%; margin-bottom: 30px}
+.info h1{color: #323232}
+.info p {margin-top: 12px; line-height: 20px; color: #2b2b2b}
+
+
+#footer {width: 770px; height: 144px; padding: 15px; background: url('/images/footer_background.jpg'); margin-top: 20px}
+
+#footer_pages {width: 200px; font-size: 12px;}
+#footer_pages li {width: 200px; margin-bottom: 3px}
+#footer_pages a {color: #ffffff}
+
+
+/* Custom element classes */
+.formError {background: #ffcfcf; border: 1px solid #ef8787; margin-top: 10px}
+.formError span {width: 100%; font-size: 12px; margin-top: 10px;}
+.formError * {margin-left: 6px}
+
+.flash_success {background: #eeffe5; width: 100%; border: 2px solid #b1d29e; margin-bottom: 10px}
+.flash_success p {padding: 10px}

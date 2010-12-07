@@ -1,0 +1,156 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.0.1
+-- http://www.phpmyadmin.net
+--
+-- Machine: localhost
+-- Genereertijd: 30 Nov 2010 om 22:31
+-- Serverversie: 5.1.36
+-- PHP-Versie: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Database: `webshop`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `categories`
+--
+
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` smallint(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  `label` varchar(20) NOT NULL,
+  `active` enum('false','true') DEFAULT 'false',
+  `parent_id` smallint(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`, `label`, `active`, `parent_id`) VALUES
+(1, 'Huishouden!!', 'Huishoud gadgets', 'true', NULL),
+(2, 'Keuken enzo', 'Keuken gadgets', 'true', 1),
+(3, 'Badkamer', 'Badkamer gadgets', 'true', 1),
+(4, 'Elektronica', '', 'true', NULL),
+(5, 'dddd', '', '', 1),
+(6, 'dddd', '', '', 1),
+(7, 'Jeffrey', '', '', NULL),
+(8, 'Nog eentje', '', '', NULL),
+(9, 'Kroon', '', '', 7),
+(10, 'haha', '', '', NULL),
+(11, 'adsfasdfasdf', '', '', NULL),
+(12, 'Categorie', '', '', NULL),
+(13, 'whehe', '', '', NULL),
+(14, 'whehe', '', '', NULL),
+(15, 'lol', '', '', 1),
+(16, 'lol1', '', '', 11),
+(17, 'test', '', '', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `countries`
+--
+
+CREATE TABLE IF NOT EXISTS `countries` (
+  `id` smallint(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `countries`
+--
+
+INSERT INTO `countries` (`id`, `name`) VALUES
+(1, 'Nederland'),
+(2, 'België'),
+(3, 'Verweggistan');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `options`
+--
+
+CREATE TABLE IF NOT EXISTS `options` (
+  `id` smallint(4) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  `value` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `options`
+--
+
+INSERT INTO `options` (`id`, `name`, `value`) VALUES
+(2, 'btw', '19'),
+(3, 'voorraad', 'true');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `orders`
+--
+
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` mediumint(6) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(35) DEFAULT NULL,
+  `insertion` varchar(10) DEFAULT NULL,
+  `lastname` varchar(35) DEFAULT NULL,
+  `country_id` smallint(3) NOT NULL,
+  `adress` varchar(35) DEFAULT NULL,
+  `zip_code` varchar(10) DEFAULT NULL,
+  `city` varchar(30) NOT NULL,
+  `phonenumber` varchar(20) DEFAULT NULL,
+  `email` varchar(120) NOT NULL,
+  `_firstname` varchar(35) NOT NULL,
+  `_insertion` varchar(10) NOT NULL,
+  `_lastname` varchar(35) NOT NULL,
+  `_adress` varchar(35) NOT NULL,
+  `_zip_code` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `orders`
+--
+
+INSERT INTO `orders` (`id`, `firstname`, `insertion`, `lastname`, `country_id`, `adress`, `zip_code`, `city`, `phonenumber`, `email`, `_firstname`, `_insertion`, `_lastname`, `_adress`, `_zip_code`) VALUES
+(1, 's', NULL, 'Kroon', 3, 'Nieuwlandstraat', '0729 DTare', '', NULL, 'jeffrey@jeffreykroon.nl', '', '', '', '', '2729DT'),
+(2, 's', NULL, 'Kroon', 3, 'Nieuwlandstraat', '0729 DTare', '', NULL, 'jeffrey@jeffreykroon.nl', '', '', '', '', '2729DT'),
+(3, 's', NULL, 'Kroon', 3, 'Nieuwlandstraat', '0729 DTare', '', NULL, 'jeffrey@jeffreykroon.nl', '', '', '', '', '2729DT'),
+(4, 's', NULL, 'Kroon', 3, 'Nieuwlandstraat', '0729 DTare', '', NULL, 'jeffrey@jeffreykroon.nl', '', '', '', '', '2729DT'),
+(5, 'Jeffrey', NULL, NULL, 1, NULL, NULL, '', NULL, '', '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `products`
+--
+
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` smallint(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `image` varchar(15) DEFAULT NULL,
+  `short_description` text NOT NULL,
+  `price` decimal(7,2) DEFAULT NULL,
+  `category_id` smallint(3) NOT NULL,
+  `stock` mediumint(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `image`, `short_description`, `price`, `category_id`, `stock`) VALUES
+(1, 'Mini RC copter', '100', 'De Mini Rc helicopter is een op afstand bestuurbare helicopter. De helicopter kan gemakkelijk rondvliegen door de huiskamer en vliegt ongeveer 6-7 minuten. De helicopter beschikt tevens over mooie knipperende led lampjes aan weerskanten. De helicopter is vervolgens weer op te laden via de USB poort van je computer.', '27.95', 2, 10),
+(2, 'USB kerstboom', '100', '', '32.50', 3, 0);

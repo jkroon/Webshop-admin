@@ -1,0 +1,59 @@
+#product_form {width: 100%;}
+#product_form label {width: 200px}
+#product_form h2 {font-size: 18px}
+#product_form input[type=text], #product_form select {width: 200px}
+
+#productOptsContent {background: #f0f0f0; width: 100%; border-bottom: 1px solid #cfcfcf}
+
+.prdTitle {width: 100%}
+.formDivPlaceholder {width: 100%; font-size: 12px}
+.formDivPlaceholderIn {padding: 10px 0}
+.prdFormDiv1 { width: 100%; margin-top: 7px; font-size: 12px}
+
+.prdOption {margin-left: 14px; border: 1px solid #cfcfcf; width: 475px; padding: 8px; margin-top: 10px}
+
+#uploadedImages {width:100%; min-height: 150px; border: 1px solid #cfcfcf; position: relative}
+#upload_data {padding: 10px}
+#imageUploader { width: 100%; background: #cfcfcf; border: 1px solid #cfcfcf; height: 30px}
+#uploader_que {width: 50%; position: absolute; top: 0; left: 0; background: #ffffff}
+.uploaded_image {margin-left: 16px; margin-top: 10px; margin-bottom: 20px; width: 120px}
+
+/* Uploadify classes */
+.uploadifyQueueItem {font-size: 11px; border: 2px solid #E5E5E5; background-color: #F5F5F5;	margin-top: 5px; padding: 10px; width: 100%}
+.uploadifyError {border: 2px solid #FBCBBC !important; background-color: #FDE5DD !important}
+.uploadifyQueueItem .cancel {float: right}
+.uploadifyProgress {background-color: #FFFFFF; border-top: 1px solid #808080; border-left: 1px solid #808080; border-right: 1px solid #C5C5C5; border-bottom: 1px solid #C5C5C5; margin-top: 10px; width: 100%}
+.uploadifyProgressBar {background-color: #0099FF;width: 1px;height: 3px}
+
+
+
+
+
+/* ####### Products ####### */
+#product_index {width: 100%; color: #323232}
+#product_options {width: 100%; border-bottom: 1px solid #cfcfcf; margin-top: 15px}
+#product_options li {border-top: 1px solid #cfcfcf; border-right: 1px solid #cfcfcf; border-left: 1px solid #cfcfcf; margin-right: 10px}
+#product_options a {padding: 5px 12px; color: #323232}
+.viewAct {font-weight: bold; background: #f4f4f4}
+
+/* List overview */
+#list_overview {width: 100%}
+#list_overview ul {width: 100%; border-bottom: 1px solid #b9d9ef}
+#list_overview li {padding: 8px 0 10px 10px}
+.listLi1 {width: 450px}
+.ulOdd {background: #EDF0F9}
+
+/* Detail overview */
+#detail_overview {width: 100%}
+#detail_overview ul {width: 100%; border-bottom: 1px solid #b9d9ef}
+#detail_overview li {padding: 10px}
+.detailLi1 {width: 120px}
+.detailLi1 img {border: 1px solid #cfcfcf}
+.detailLi2 {width: 340px}
+
+.prdDetailInfo {width: 100%; margin-top: 5px}
+.prdDetailInfo span {margin-top: 5px; width: 100%}
+
+.prdDetailOpts {margin-top: 50px}
+
+#pages_overview {width: 100%; text-align: center; margin-top: 15px; line-height: 20px}

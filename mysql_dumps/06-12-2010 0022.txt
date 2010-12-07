@@ -1,0 +1,245 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.0.1
+-- http://www.phpmyadmin.net
+--
+-- Machine: localhost
+-- Genereertijd: 05 Dec 2010 om 23:21
+-- Serverversie: 5.1.36
+-- PHP-Versie: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Database: `webshop`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `categories`
+--
+
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` smallint(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  `label` varchar(20) NOT NULL,
+  `active` enum('false','true') DEFAULT 'false',
+  `parent_id` smallint(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`, `label`, `active`, `parent_id`) VALUES
+(1, 'Huishouden!!', 'Huishoud gadgets', 'true', NULL),
+(2, 'Keuken enzo', 'Keuken gadgets', 'true', 1),
+(3, 'Badkamer', 'Badkamer gadgets', 'true', 1),
+(4, 'Elektronica', '', 'true', NULL),
+(5, 'dddd', '', '', 1),
+(6, 'dddd', '', '', 1),
+(7, 'Jeffrey', '', '', NULL),
+(8, 'Nog eentje', '', '', NULL),
+(9, 'Kroon', '', '', 7),
+(10, 'haha', '', '', NULL),
+(11, 'adsfasdfasdf', '', '', NULL),
+(12, 'Categorie', '', '', NULL),
+(13, 'whehe', '', '', NULL),
+(14, 'whehe', '', '', NULL),
+(15, 'lol', '', '', 1),
+(16, 'lol1', '', '', 11),
+(17, 'test', '', '', 1),
+(18, 'test', '', '', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `countries`
+--
+
+CREATE TABLE IF NOT EXISTS `countries` (
+  `id` smallint(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `countries`
+--
+
+INSERT INTO `countries` (`id`, `name`) VALUES
+(1, 'Nederland'),
+(2, 'België'),
+(3, 'Verweggistan');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `options`
+--
+
+CREATE TABLE IF NOT EXISTS `options` (
+  `id` smallint(4) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  `value` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `options`
+--
+
+INSERT INTO `options` (`id`, `name`, `value`) VALUES
+(2, 'btw', '19'),
+(3, 'voorraad', 'true'),
+(5, 'product_view', 'detail');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `orders`
+--
+
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` mediumint(6) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(35) DEFAULT NULL,
+  `insertion` varchar(10) DEFAULT NULL,
+  `lastname` varchar(35) DEFAULT NULL,
+  `country_id` smallint(3) NOT NULL,
+  `adress` varchar(35) DEFAULT NULL,
+  `zip_code` varchar(10) DEFAULT NULL,
+  `city` varchar(30) NOT NULL,
+  `phonenumber` varchar(20) DEFAULT NULL,
+  `email` varchar(120) NOT NULL,
+  `_firstname` varchar(35) NOT NULL,
+  `_insertion` varchar(10) NOT NULL,
+  `_lastname` varchar(35) NOT NULL,
+  `_adress` varchar(35) NOT NULL,
+  `_zip_code` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `orders`
+--
+
+INSERT INTO `orders` (`id`, `firstname`, `insertion`, `lastname`, `country_id`, `adress`, `zip_code`, `city`, `phonenumber`, `email`, `_firstname`, `_insertion`, `_lastname`, `_adress`, `_zip_code`) VALUES
+(1, 's', NULL, 'Kroon', 3, 'Nieuwlandstraat', '0729 DTare', '', NULL, 'jeffrey@jeffreykroon.nl', '', '', '', '', '2729DT'),
+(2, 's', NULL, 'Kroon', 3, 'Nieuwlandstraat', '0729 DTare', '', NULL, 'jeffrey@jeffreykroon.nl', '', '', '', '', '2729DT'),
+(3, 's', NULL, 'Kroon', 3, 'Nieuwlandstraat', '0729 DTare', '', NULL, 'jeffrey@jeffreykroon.nl', '', '', '', '', '2729DT'),
+(4, 's', NULL, 'Kroon', 3, 'Nieuwlandstraat', '0729 DTare', '', NULL, 'jeffrey@jeffreykroon.nl', '', '', '', '', '2729DT'),
+(5, 'Jeffrey', NULL, NULL, 1, NULL, NULL, '', NULL, '', '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `products`
+--
+
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` smallint(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `description` text NOT NULL,
+  `price` decimal(7,2) DEFAULT NULL,
+  `options` enum('false','true') NOT NULL DEFAULT 'false',
+  `category_id` smallint(3) NOT NULL,
+  `stock` mediumint(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=59 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `options`, `category_id`, `stock`) VALUES
+(1, 'Mini RC helicopter', '<b>Over de helicopter</b><div>De helicopter is vliegensvlug, en ook nog eens heeeeel erg mooi :)</div>', '27.95', 'true', 4, 10),
+(43, 'Call of Duty Black Ops', 'Een hele vette game', '47.95', 'true', 12, 0),
+(42, 'Samsung Syncmaster T240HD', '', '149.95', 'false', 1, 0),
+(41, 'Playstation 3', '', '249.95', 'false', 1, 0),
+(40, 'Xbox 360', '', '349.95', 'false', 1, 0),
+(39, 'Nintendo Wii', '', '49.95', 'false', 1, 0),
+(44, 'Intel Core i7 3600Mhz', '', '399.95', 'false', 10, 0),
+(45, 'OCZ PSU 650 Watt', '', '65.80', 'false', 1, 0),
+(46, 'OCZ DDR3 2600Mhz', '', '29.45', 'false', 1, 0),
+(47, 'Cooler Master ATX Case', '', '49.95', 'false', 1, 0),
+(48, 'Asus Extreme rampage', '', '99.99', 'false', 1, 0),
+(49, 'Logitech G9', '', '78.80', 'false', 1, 0),
+(50, 'Windows 7', 'Windows 7 enzo', '44.00', 'true', 1, 0),
+(51, 'Windows 7', '', NULL, 'true', 1, 0),
+(52, 'iPad', '', '320.00', 'false', 1, 0),
+(53, 'Canon printer', 's', '129.00', 'false', 1, 0),
+(54, 'Logitech X540', '', '129.00', 'false', 1, 0),
+(55, 'G19 Toetsenbord', '', '79.00', 'false', 1, 0),
+(56, 'Medal of Honor PC', '', '45.00', 'false', 1, 0),
+(57, 'Samsung P2370', '', '319.00', 'false', 1, 0),
+(58, 'G15 Toetsenbord', '', '50.00', 'false', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `product_images`
+--
+
+CREATE TABLE IF NOT EXISTS `product_images` (
+  `id` mediumint(5) NOT NULL AUTO_INCREMENT,
+  `filename` varchar(50) DEFAULT NULL,
+  `product_id` mediumint(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `product_images`
+--
+
+INSERT INTO `product_images` (`id`, `filename`, `product_id`) VALUES
+(14, '291577252-playstation_3_31.jpg', 41),
+(15, '291577289-xbox360.jpg', 40),
+(16, '291577321-nintendo_wii.jpg', 39),
+(17, '291577360-393.jpg', 44),
+(18, '291577450-RC-Helicopter-Apache.jpg', 1),
+(20, '291577631-Call_of_Duty_Black_Ops_box-thu.jpg', 43),
+(21, '291585512-asus_rampage_ii_extreme-core-i.jpg', 48),
+(22, '291586698-DDR3_Platinum_dual.jpg', 46),
+(23, '291589126-logitech-g9-laser-gaming-mouse.jpg', 49),
+(24, '291589175-8498-img5407s.jpg', 42),
+(25, '291589238-coolermaster-haf932.jpg', 47),
+(26, '291589699-windows7-family-pack-offer-cov.jpg', 51),
+(27, '291589818-ipad_hero_par.jpg', 52),
+(28, '291589930-57_canon_pixma_ip2600.jpg', 53),
+(29, '291589988-Logitech-X-540.jpg', 54),
+(30, '291590065-logitech-g19-keyboard1.jpg', 55),
+(31, '291590154-images.jpg', 56),
+(32, '291590237-10704-img9433s.jpg', 57);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `product_options`
+--
+
+CREATE TABLE IF NOT EXISTS `product_options` (
+  `id` smallint(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `price` decimal(7,2) DEFAULT NULL,
+  `product_id` mediumint(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=80 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `product_options`
+--
+
+INSERT INTO `product_options` (`id`, `name`, `price`, `product_id`) VALUES
+(67, 'Groot', '49.95', 43),
+(68, 'Klein', '39.95', 1),
+(69, 'Middel', '44.95', 1),
+(70, 'Groot', '49.95', 1),
+(71, 'Home edition', '129.95', 0),
+(72, 'Professional edition', '179.95', 0),
+(73, 'Ultimate', '229.95', 0),
+(74, 'Home edition', '125.00', 50),
+(75, 'Professional edition', '175.00', 50),
+(78, 'Home edition', '44.00', 51),
+(79, 'Professional edition', '45.00', 51);
