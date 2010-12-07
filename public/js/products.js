@@ -54,49 +54,63 @@ function switchPrice(type) {
 
 
 function addOption() {
-	html = '<div class="prdOption" id="prdOption'+currentOption+'">';
-	html = html + '<div class="prdFormDiv1"><label>Naam van optie</label><input type="text" name="post[Product][priceOptions]['+currentOption+'][name]"></div>';
-	html = html + '<div class="prdFormDiv1"><label>Prijs</label><input type="text" name="post[Product][priceOptions]['+currentOption+'][price]" /></div>';
-	html = html + '<div class="prdFormDiv1"><label>Standaard gebruiken</label><input type="checkbox" name="post[Product][priceOptions]['+currentOption+'][custom]" value="true" /></div>';
-	html = html + '<div class="prdFormDiv1" id="optionDel'+currentOption+'"><a href="#" title="Optie verwijderen" onclick="deleteOption('+currentOption+'); return false">Optie verwijderen</a></div>';
+
+	newOption = currentOption + 1;
+	
+	// De nieuwe HTML wordt aangemaakt
+	html = '<div class="head_option" id="head_option_'+newOption+'">';
+	html = html + '<div class="head_option_opts" id="option_'+newOption+'"><input type="text" name="option['+newOption+'][" value="Titel van de optie" />';
+	html = html + '<a href="#" onclick="deleteOption('+newOption+'); return false" style="float: right"><img src="/images/delete_option_button.png" /></a></div>';
+	html = html + '<table cellpadding="0" cellspacing="0" id="options_'+newOption+'"><tr id="subOption_'+newOption+'_0">';
+	html = html + '<td class="td1"><b>Naam</b></td>';
+	html = html + '<td class="td2"><b>Prijs</b></td>';
+	html = html + '<td class="td3"><b>Prijs optie</b></td>';
+	html = html + '<td class="td4"><b>Artikelnummer</b></td>';
+	html = html + '<td class="td5"><b>Verwijderen</b></td>';
+	html = html + '</tr></table>';
+	html = html + '<div class="head_options_add"><a href="#" title="" onclick="addNewOption('+newOption+'); return false"><img src="/images/add_option_button.png" /></a></div>';
 	html = html + '</div>';
 
+	// De html wordt in de division gezet
 	$('#product_opts').append(html);
 	
-	// De current option wordt opgeteld
+	// Er wordt een nieuwe optie toegevoegd
+	addNewOption(newOption);
+	
+	// De currentOption variable wordt opgeteld
 	currentOption = currentOption + 1;
 	
-	// Het aantal velden wordt opgehaald
-	if (!currentDelete) {
-		options = $('.prdOption');
+	return false;
+}
 
-		if (options.length > 1) {
-			id = $('.prdOption:first').attr('id');
-			id = id.substr(9);
-			
-			html = '<div class="prdFormDiv1" id="optionDel'+id+'"><a href="#" title="Optie verwijderen" onclick="deleteOption('+id+'); return false">Optie verwijderen</a></div>';
+function addNewOption(id) {
+	option_id = $('#options_'+id+' tr:last').attr('id').split('_');
+	option_id = parseInt(option_id[1]) + 1;
 
-			$('.prdOption:first').append(html);
-			currentDelete = true;
-		}
-	}
+	html = '<tr id="subOption_'+id+'_'+option_id+'"><td><input type="text" name="option['+id+']['+option_id+'][name]" class="opt1" /></td>';
+	html = html + '<td><input type="text" name="option['+id+']['+option_id+'][price]" class="opt2" /></td>';
+	html = html + '<td><select name="option['+id+']['+option_id+'][type]" class="opt3"><option value="">Vast</option><option value="">Meerprijs</option></select>';
+	html = html + '</td><td><input type="text" name="option['+id+']['+option_id+'][article_id]" class="opt4" /></td>';
+	html = html + '<td><a href="#" onclick="deleteSubOption('+id+', '+option_id+')" title="Verwijderen" style="margin-left: 30px"><img src="/images/delete_icon.png" /></a></td></tr>';
+	
+	$('#options_'+id).append(html);
+	
+	return false;
+}
+
+
+function deleteSubOption(parent_id, id) {
+	
+	$('#subOption_'+parent_id+'_'+id).remove();
+	
 }
 
 function deleteOption(id) {
-	$('#prdOption'+id).slideUp(400, function() {
-		$('#prdOption'+id).remove();
-		
-		
-		options = $('.prdOption');				
-		
-		if (options.length < 2) {
-			id = $('.prdOption:first').attr('id');
-			id = id.substr(9);
-			
-			$('#optionDel'+id).remove();
-			currentDelete = false;
-		}
-	});
+
+	if (confirm('Weet u zeker dat u deze optie wilt verwijderen ?')) {
+		$('#head_option_'+id).remove();
+	}
+
 }
 
 

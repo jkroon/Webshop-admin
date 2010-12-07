@@ -86,92 +86,61 @@
 							<div id="product_outer" style="{useOptionsPrice}">
 								<div id="product_opts">
 								
-									[START productPriceOption]
-									<div class="prdOption" id="prdOption{id}">
-									
-										[START productPriceOptionError]
-										<div class="prdFormDiv formError" style="padding: 10px 10px 10px 0">
-											<label>Naam van optie</label>							
-											<input type="text" name="post[Product][priceOptions][{id}][name]" value="{name}" />
-											<span>Dit is een verplicht veld</span>
-										</div>
-										[END productPriceOptionError]
-										
-										[START productPriceOptionNormal]
-										<div class="prdFormDiv">
-											<label>Naam van optie</label>							
-											<input type="text" name="post[Product][priceOptions][{id}][name]" value="{name}" />
-										</div>
-										[END productPriceOptionNormal]
-										
-										<div style="width: 100%; height: 9px"> &nbsp; </div>
-										
-										
-										[START productPriceOptionPrcError]
-										<div class="prdFormDiv formError" style="padding: 10px 10px 10px 0">
-											<label>Prijs</label>
-											<input type="text" name="post[Product][priceOptions][{id}][price]" value="{price}" />
-											<span style="color: #323232">U heeft geen geldige prijs ingevuld. Prijzen dient u alsvolgt in te vullen: 49.95</span>
-										</div>
-										[END productPriceOptionPrcError]
-										
-										[START productPriceOptionPrcNormal]
-										<div class="prdFormDiv">
-											<label>Prijs</label>
-											<input type="text" name="post[Product][priceOptions][{id}][price]" value="{price}" />
-										</div>
-										[END productPriceOptionPrcNormal]
-										
-										<div style="width: 100%; height: 9px"> &nbsp; </div>
-										
-										<div class="prdFormDiv">
-											<label>Standaard gebruiken</label>
-											<input type="checkbox" name="post[Product][priceOptions][{id}][custom]" value="true" {checked} />
+									<div class="head_option">
+										<div class="head_option_opts">
+											<input type="text" name="" value="Titel van de optie" />
 										</div>
 										
-										<div class="prdFormDiv1" id="optionDel{id}"><a href="#" title="Optie verwijderen" onclick="deleteOption({id}); return false">Optie verwijderen</a></div>
-									</div>
-									[END productPriceOption]
+										<table cellpadding="0" cellspacing="0">
+											<tr>
+												<td class="td1"><b>Naam</b></td>
+												<td class="td2"><b>Prijs</b></td>
+												<td class="td3"><b>Prijs optie</b></td>
+												<td class="td4"><b>Artikelnummer</b></td>
+												<td class="td5"><b>Verwijderen</b></td>
+											</tr>
+											
+											<tr>
+												<td><input type="text" name="option_1_1_name" class="opt1" /></td>
+												<td><input type="text" name="option_1_1_price" class="opt2" /></td>
+												<td>
+													<select name="option_1_1_price_option" class="opt3">
+														<option value="">Vast</option>
+														<option value="">Meerprijs</option>
+													</select>
+												</td>
+												<td><input type="text" name="option_1_1_article_id" class="opt4" /></td>
+												<td>Verwijderen</td>
+											</tr>
+											
+											<tr>
+												<td><input type="text" name="option_1_1_name" class="opt1" /></td>
+												<td><input type="text" name="option_1_1_price" class="opt2" /></td>
+												<td>
+													<select name="option_1_1_price_option" class="opt3">
+														<option value="">Vast</option>
+														<option value="">Meerprijs</option>
+													</select>
+												</td>
+												<td><input type="text" name="option_1_1_article_id" class="opt4" /></td>
+												<td>Verwijderen</td>
+											</tr>
+										</table>
+									</div>	
 									
 									
-									
-									[START productPriceOptionClear]
-									<div class="prdOption" id="prdOption{id}">
-										
-										<div class="prdFormDiv">
-											<label>Naam van optie</label>							
-											<input type="text" name="post[Product][priceOptions][{id}][name]" value="{name}" />
-										</div>
-										
-										<div style="width: 100%; height: 9px"> &nbsp; </div>
-										
-										<div class="prdFormDiv">
-											<label>Prijs</label>
-											<input type="text" name="post[Product][priceOptions][{id}][price]" value="{price}" />
-										</div>
-										
-										<div style="width: 100%; height: 9px"> &nbsp; </div>
-										
-										<div class="prdFormDiv">
-											<label>Standaard gebruiken</label>
-											<input type="checkbox" name="post[Product][priceOptions][{id}][custom]" value="true" {checked} />
-										</div>
-									</div>
-									[END productPriceOptionClear]
-									
-									
-								</div>
-								<a href="#" title="" onclick="addOption(); return false">Optie toevoegen</a>
-								</div>
-							
-								<div id="product_price" style="{useFixedPrice}">
-									{inputPrdPrice}
 								</div>
 								
+								<a href="#" title="" onclick="addOption(); return false">Optie toevoegen</a>
+
 								<div style="width: 100%; height: 22px"> &nbsp; </div>
 							</div>
 						</div>
-						
+						</div>
+						</div>
+						<script type="text/javascript">
+							var currentOption = 1;
+						</script>
 						<input type="hidden" name="post[Product][options]" id="options" value="{inputOptionsHidden}" />
 									
 					
@@ -267,15 +236,7 @@
 			</form>
 			
 			<script type="text/javascript">
-				var currentOption = parseInt($('.prdOption:last').attr('id').substr(9)) + 1;
-	
-				options = $('.prdOption').length;
-	
-				if (options > 1) {
-					var currentDelete = true;
-				} else {
-					var currentDelete = false;
-				}
+				var currentOption = 1;
 			</script>
 			
 		</div>

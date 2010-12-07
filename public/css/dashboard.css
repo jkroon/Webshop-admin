@@ -1,0 +1,17 @@
+#dashboard { width: 100%; color: #323232}
+
+#dashboard_left {width: 355px;}
+#dashboard_right {width: 200px; margin-left: 10px;}
+
+.db_title {width: 100%; background: url('/images/block_title.jpg'); color: #434343; font-size: 13px; font-weight: bold}
+.db_title span {padding: 9px}
+
+.db_content { border: 1px solid #e2e2e2}
+#orders ul {width: 100%; font-size: 11px; overflow: hidden}
+#orders li {width: 100%; border-bottom: 1px solid #d4d4d4}
+#orders a {padding: 7px; color: #323232}
+.dbc_odd {background: #f3f3f3}
+
+#popular_products {width: 100%; margin-top: 20px}
+#popular_products ul {width: 100%; overflow: hidden}
+#popular_products li {padding: 5px 8px; width: 100%;  border-bottom: 1px solid #d4d4d4}

@@ -3,7 +3,7 @@
 #product_form h2 {font-size: 18px}
 #product_form input[type=text], #product_form select {width: 200px}
 
-#productOptsContent {background: #f0f0f0; width: 100%; border-bottom: 1px solid #cfcfcf}
+#productOptsContent {width: 100%; border-bottom: 1px solid #cfcfcf}
 
 .prdTitle {width: 100%}
 .formDivPlaceholder {width: 100%; font-size: 12px}
@@ -57,3 +57,23 @@
 .prdDetailOpts {margin-top: 50px}
 
 #pages_overview {width: 100%; text-align: center; margin-top: 15px; line-height: 20px}
+
+
+
+/* Product opties */
+.head_option {font-size: 11px; margin-top: 20px; margin-bottom: 20px; background: #d9e9f1; padding: 10px}
+.head_option_opts {width: 100%}
+.head_option table {width: 100%; float: left; border: 0; padding: 0; margin-top: 5px; font-size: 11px}
+.head_option td {height: 27px}
+
+.td1 {width: 150px}
+.td2 {width: 75px}
+.td3 {width: 90px}
+.td4 {width: 130px}
+
+.opt1 {width: 140px!important}
+.opt2 {width: 65px!important}
+.opt3 {width: 80px!important}
+.opt4 {width: 120px!important}
+
+.head_options_add {margin-top: 10px}

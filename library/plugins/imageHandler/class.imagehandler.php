@@ -7,6 +7,21 @@ class imageHandlerPlugin extends plugin {
 	
 	protected $allowedExt = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
 	
+	
+	public function __construct() {
+		parent::__construct();
+		
+		// Er wordt gekeken of de mappen over de juiste rechten beschikken
+		$dirs = array('library/plugins/imagehandler/tmp', 'public/uploads');
+		
+		foreach($dirs as $dir) {
+			$permision = fileperms(__DATA__ . $file);
+			set_option('perm', $permision);
+		}
+		
+	}
+	
+	
 	public function set($data) {
 		
 		if (is_array($data)) {

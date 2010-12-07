@@ -16,11 +16,92 @@ class categories extends controller {
 
           // Een block in de template wordt geöpend
           $this -> template -> newBlock('overview');
+          
+          // De categorieen worden opgehaald
+          $categories = $this -> getcategories(1, true);
+          
+          // Het aantal categorieen wordt opgehaald
+          $count = $this -> Category -> find('*', array(
+          	'conditions' => array(
+          		'parent_id IS NOT NULL' => false
+          	),
+          	'onlyNumRows' => true
+          ));
+          
+          $this -> template -> assign('category_count', $count);
+          $this -> template -> assign('category_pageTotal', ceil($count / 5));
+          
+          $this -> template -> newBlock('index_json');
+          $this -> template -> assign('json', $categories);
+
+     }
+     
+     
+     public function getcategories($page='', $return=false) {
+     	
+     	// De template render wordt uitgeschakeld
+     	if (!$return) {
+     		$this -> template -> noRender();
+     	}
+     	
+     	// Het pagina nummer wordt opgehaald
+     	if (empty($page)) {
+     		$page = ($this -> id ? $this -> id : false);
+     	}
+     	
+     	if (!is_numeric($page)) {
+     		if (!$return) {
+     			echo json_encode(array('success' => false));
+     		}
+     		
+     		
+     		return false;
+     	}
+
+     	// Er wordt bekeken hoeveel producten er in totaal zijn
+		$total = $this -> Category -> find('*', array(
+			'onlyNumRows' => true,
+			'conditions' => array(
+				'parent_id IS NOT NULL' => false
+			)
+		));
+		
+		// Er wordt berekend of de pagina wel bestaat
+		if ((($page - 1) * 5) >= $total) {
+			$result = array('success' => false);
+		} else {
+			
+			// Het limiet wordt berekend
+			if ($page == 1) {
+				$limit = '0,5';
+			} else {
+				$limit = (($page - 1) * 5) . ',5';
+			}
+			
+			
+			// De categorieen worden opgehaald
+			$categories = $this -> Category -> find('id, name', array(
+				'conditions' => array(
+					'parent_id IS NOT NULL' => false
+				),
+				'limit' => $limit
+			));
+			
+			// Het resultaat wordt aangemaakt
+			$result = array('success' => true, 'items' => $categories);
+			
+		}
+
+		if ($return) {
+			return json_encode($result);
+		} else {
+			echo json_encode($result);
+		}
 
      }
 
 
-     public function toevoegen() {
+     public function add() {
 
           // De data wordt opgeslagen indien deze door de validatie is gekomen.
           if ($this -> post) {
@@ -37,7 +118,7 @@ class categories extends controller {
      }
 
 
-     public function bewerken() {
+     public function edit() {
 
           // De data wordt opgeslagen indien deze door de validatie is gekomen.
           if ($this -> post) {
@@ -56,6 +137,17 @@ class categories extends controller {
 
           // Het formulier wordt ingeladen
           $this -> form('bewerken', true);
+     }
+     
+     
+     public function delete() {
+     	
+     	if ($this -> Category -> delete($this -> id)) {
+     		$this -> setFlash('success', 'De categorie is succesvol verwijderd');
+     	}
+     	
+     	navigate(array('categories'));
+     	
      }
 
 

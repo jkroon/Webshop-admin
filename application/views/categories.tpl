@@ -19,53 +19,15 @@
                     </div>
 
                     <div class="cat_inner">
-                         <ul>
-                              <li class="li1"><a href="">Categorienaam</a></li>
-                              <li class="li2">
-                                   <a href=""><img src="{http}images/edit_icon.gif" alt="" /></a>
-                                   <a href="" style="margin: 0 0 0 7px"><img src="{http}images/delete_icon.png" alt="" /></a>
-                              </li>
-                         </ul>
-
-                         <ul class="odd">
-                              <li class="li1"><a href="">Categorienaam</a></li>
-                              <li class="li2">
-                                   <a href=""><img src="{http}images/edit_icon.gif" alt="" /></a>
-                                   <a href="" style="margin: 0 0 0 7px"><img src="{http}images/delete_icon.png" alt="" /></a>
-                              </li>
-                         </ul>
-
-                         <ul>
-                              <li class="li1"><a href="">Categorienaam</a></li>
-                              <li class="li2">
-                                   <a href=""><img src="{http}images/edit_icon.gif" alt="" /></a>
-                                   <a href="" style="margin: 0 0 0 7px"><img src="{http}images/delete_icon.png" alt="" /></a>
-                              </li>
-                         </ul>
-
-                         <ul class="odd">
-                              <li class="li1"><a href="">Categorienaam</a></li>
-                              <li class="li2">
-                                   <a href=""><img src="{http}images/edit_icon.gif" alt="" /></a>
-                                   <a href="" style="margin: 0 0 0 7px"><img src="{http}images/delete_icon.png" alt="" /></a>
-                              </li>
-                         </ul>
-
-                         <ul>
-                              <li class="li1"><a href="">Categorienaam</a></li>
-                              <li class="li2">
-                                   <a href=""><img src="{http}images/edit_icon.gif" alt="" /></a>
-                                   <a href="" style="margin: 0 0 0 7px"><img src="{http}images/delete_icon.png" alt="" /></a>
-                              </li>
-                         </ul>
+                    	<div id="categoryOuter"> </div>
 
 						<div class="catStats">
-							<span>Er werden <b>20</b> categorie&euml;n gevonden</span>
+							<span>Er werden <b>{category_count}</b> categorie&euml;n gevonden</span>
 							
-							<div class="catStatsPages">
-								<a href="#" title=""><img src="{http}images/back_icon.png" alt="" class="no_float" /> Vorige</a>
-								<p>Pagina <b>1</b> van <b>6</b></p>
-								<a href="#" title="">Volgende <img src="{http}images/next_icon.png" alt="" class="no_float" /></a>
+							<div class="catStatsPages" id="categoryStats">
+								<a href="#" title="" onclick="updatePage('back'); return false"><img src="{http}images/back_icon.png" alt="" class="no_float" /> Vorige</a>
+								<p>Pagina <b>1</b> van {category_pageTotal}</p>
+								<a href="#" title="" onclick="updatePage('next'); return false">Volgende <img src="{http}images/next_icon.png" alt="" class="no_float" /></a>
 							</div>
 						</div>
 
@@ -113,6 +75,68 @@
                </div>
           </div>
      <!-- Subcategorieen -->
+     
+     [START index_json]
+     <script type="text/javascript">
+     	var obj = $.parseJSON('{json}');
+     	var currentPage = 1;
+     	
+     	$(document).ready(function() {
+     		updateCategories();
+     	});
+     	
+     	function updateCategories() {
+     		$('#categoryOuter').html('');
+     	
+	     	$.each(obj['items'], function(key, value) {
+	
+				// De html wordt aangemaakt
+				html = '<ul><li class="li1"><a href="">'+value['Category']['name']+'</a></li><li class="li2">';
+	            html = html + '<a href="/categories/edit/'+value['Category']['id']+'/"><img src="{http}images/edit_icon.gif" alt="" /></a>';
+	            html = html + '<a href="/categories/delete/'+value['Category']['id']+'/" style="margin: 0 0 0 7px"><img src="{http}images/delete_icon.png" alt="" /></a></li></ul>'; 
+	            
+	            // De html wordt in de division geplaatst
+	            $('#categoryOuter').append(html);    		
+	
+	     	});
+	     	
+	     	$('#categoryOuter ul:odd').addClass('odd');
+     	}
+     	
+     	
+     	function updatePage(type) {
+     	
+     		if (type == 'next') {
+     			newPage = currentPage + 1;
+     		} else {
+     			newPage = currentPage - 1;
+     		}
+     		
+     		
+ 			$.ajax({
+ 				url: '/categories/getcategories/'+newPage+'/',
+ 				dataType: 'json',
+ 				success: function(response) {
+ 					
+ 					if (response['success']) {
+ 						obj = response;
+ 						updateCategories();
+ 						
+ 						if (type == 'next') {
+ 							currentPage = currentPage + 1;
+ 						} else {
+ 							currentPage = currentPage - 1;
+ 						}
+ 						
+ 						$('#categoryStats b').html(currentPage);
+ 					}
+ 					
+ 				}
+ 			});
+     	
+     	}
+     </script>
+     [END index_json]
 
 [END overview]
 

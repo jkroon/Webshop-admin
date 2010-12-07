@@ -194,10 +194,10 @@ class products extends controller {
 			$result = $this -> Product -> find('*', array(
 				'conditions' => array(
 					'id' => $this -> id
-				),			
-				'hasMany' => array(
-					'product_options' => 'name, price'
-				)
+				)			
+				//'hasMany' => array(
+				//	'product_options' => 'name, price'
+				//)
 			));
 			
 			
