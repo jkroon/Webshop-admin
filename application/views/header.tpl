@@ -2,8 +2,6 @@
 	<head>
 
 		<script type="text/javascript" src="{http}js/jquery.js"></script>
-		<script type="text/javascript" src="{http}js/jquery.cycle.all.min.js"></script>
-		<script type="text/javascript" src="{http}js/index.js"></script>
 
           [START html_javascript]
           <script type="text/javascript" src="{src}.js"></script>
