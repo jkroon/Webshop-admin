@@ -28,7 +28,7 @@ class plugin {
 	switch($type) {
 	    case "script":
               if (!isset($session['plugin']['script']) || !in_array($file, $session['plugin']['script'])) {
-                    $_SESSION['template']['plugin']['script'][] = 'plugins/' . $plugin . '/' . $file;
+                    $_SESSION['template']['plugin']['script'][] = 'library/plugins/' . $plugin . '/' . $file;
               }
 	    break;
 
