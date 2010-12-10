@@ -74,7 +74,7 @@ class products extends controller {
 				++$i;
 				
 			}
-			
+
 			$result = array('success' => true, 'items' => $result);
 			
 		}
@@ -171,18 +171,17 @@ class products extends controller {
 	
 	
 	public function edit() {
-		
+
 		// De data wordt opgeslagen indien de POST aanvraag aanwezig is
 		if ($this -> post) {
 			
 			if ($this -> Product -> save($this -> post)) {
-				$this -> setFlash('success', 'Het product is succesvol aangepast');
-				navigate(array('products'));
+				//$this -> setFlash('success', 'Het product is succesvol aangepast');
+				//navigate(array('products'));
 			}
-			
-				
+
 			// De prodct opties worden geladen
-			if ($this -> post['Product']['options'] == 'true') {
+			if ($this -> post['Product']['use_options'] == 'true') {
 				$product_options = true;
 			} else {
 				$product_options = false;
@@ -194,21 +193,51 @@ class products extends controller {
 			$result = $this -> Product -> find('*', array(
 				'conditions' => array(
 					'id' => $this -> id
-				)			
-				//'hasMany' => array(
-				//	'product_options' => 'name, price'
-				//)
+				)
 			));
-			
 			
 			// De post data wordt aangemaakt						
 			$this -> Product -> data = $result[0];
 			$this -> post['Product'] = $result[0]['Product'];
 			
+			
 			// Er wordt bekeken of er product opties aanwezig zijn
-			if ($result[0]['Product']['options'] == 'true') {
+			if ($result[0]['Product']['use_options'] == 'true') {
+				
+			
+				// De product opties worden opgehaald
+				$options = $this -> Product -> Product_option -> find('id,name', array(
+					'conditions' => array(
+						'product_id' => $this -> id
+					)
+				));
+				
+				foreach($options as $array) {
+					$id = $array['Product_option']['id'];
+					$array = $array['Product_option'];
+					unset($array['id']);
+					
+					$this -> post['Product']['options'][$id] = $array;
+					
+					// De suboptions worden opgehaald
+					$suboptions = $this -> Product -> Product_option -> Product_suboption -> find('id,name,price,type,article_id', array(
+						'conditions' => array(
+							'parent_id' => $id
+						)
+					));
+					
+					foreach($suboptions as $suboption) {
+						$sub_id = $suboption['Product_suboption']['id'];
+						$sub_array = $suboption['Product_suboption'];
+						unset($sub_array['id']);
+						
+						$this -> post['Product']['options'][$id][$sub_id] = $sub_array;
+					}
+				}
+				
+				// De product opties string wordt op true gezet
 				$product_options = true;
-				$this -> post['Product']['priceOptions'] = $result[0]['product_options'];
+			 
 			} else {
 				$product_options = false;
 			}
@@ -391,47 +420,38 @@ class products extends controller {
 											   'optionsPriceActive' => 'viewAct'));
 			
 			// Alle product opties worden ingeladen
-			foreach($this -> post['Product']['priceOptions'] as $key=>$array) {
+			foreach($this -> post['Product']['options'] as $key=>$array) {
+
+				// Alle opties worden door de lus gehaald
+				$this -> template -> newBlock('option');
+				$this -> template -> assign('option_id', $key);
 				
-				$array['id'] = $key;
-				$array['checked'] = (isset($array['custom']) ? 'checked' : '');
-				
-				// Er wordt bekeken of er fouten aanwezig zijn in de product opties					
-				if (isset($this -> Product -> validateErrors['Product']['productOptions'][$key])) {
-					
-					$errors = $this -> Product -> validateErrors['Product']['productOptions'][$key];
-					
-				} else {
-					
-					$errors = false;
+				if(isset($array['name'])) {
+					$this -> template -> assign('name', $array['name']);
+					unset($array['name']);
 				}
 				
-				// Een nieuw block in de template wordt geopend
-				$this -> template -> newBlock('productPriceOption');
-				$this -> template -> assign('id', $key);
-				
+				// De velden van de optie worden opgehaald
+				foreach($array as $optKey=>$optArr) {
 					
-				// Het block voor de productnaam wordt geopend
-				if (isset($errors['name'])) {
-					$this -> template -> newBlock('productPriceOptionError');
-					$this -> template -> assign($array);
-				} else {
-					$this -> template -> newBlock('productPriceOptionNormal');
-					$this -> template -> assign($array);
+					// De ID's worden in de optArr geplaatst
+					$optArr['option_id'] = $key;
+					$optArr['suboption_id'] = $optKey;
+					
+					$this -> template -> newBlock('sub_option');
+					$this -> template -> assign($optArr);
 				}
 				
+			}
+			
+			
+			// Er wordt gekeken of er validatieErrors aanwezig zijn
+			if ($this -> post && isset($this -> Product -> validateErrors['Product']['options'])) {
+				$json = json_encode($this -> Product -> validateErrors['Product']['options']);
 				
-				// Het block voor de prijs wordt geopend
-				if (isset($errors['price'])) {
-					$this -> template -> newBlock('productPriceOptionPrcError');
-					$this -> template -> assign($array);
-				} else {
-					$this -> template -> newBlock('productPriceOptionPrcNormal');
-					$this -> template -> assign($array);
-				}
-					
-				
-				
+				// De JSON errors worden naar de template geparsed
+				$this -> template -> newBlock('json_errors');
+				$this -> template -> assign('json', $json);
 			}
 			
 		} else {
@@ -443,8 +463,7 @@ class products extends controller {
 			$this -> template -> assign(array('fixedPriceActive' => 'viewAct',
 											   'optionsPriceActive' => ''));
 			
-			$this -> template -> newBlock('productPriceOptionClear');
-			$this -> template -> assign('id', 1);
+			$this -> template -> newBlock('newOptions');
 			
 		}
 		

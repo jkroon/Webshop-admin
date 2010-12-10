@@ -22,8 +22,9 @@ function deleteProduct(id) {
 
 
 function switchPrice(type) {
-	optionsBtn = '#optionsBtn';
-	priceBtn = '#priceBtn';
+	
+	var optionsBtn = '#optionsBtn';
+	var priceBtn = '#priceBtn';
 	
 	optionsObj = '#product_outer';
 	priceObj = '#product_price'
@@ -55,11 +56,19 @@ function switchPrice(type) {
 
 function addOption() {
 
-	newOption = currentOption + 1;
+	newOne = $('#product_opts div.head_option:last').attr('id');
+
+	if (!newOne) {
+		newOne = 0;
+	} else {
+		newOne = parseInt(newOne.split('_')[2]);
+	}
+	
+	newOption = newOne + 1;
 	
 	// De nieuwe HTML wordt aangemaakt
 	html = '<div class="head_option" id="head_option_'+newOption+'">';
-	html = html + '<div class="head_option_opts" id="option_'+newOption+'"><input type="text" name="option['+newOption+'][" value="Titel van de optie" />';
+	html = html + '<div class="head_option_opts" id="option_'+newOption+'"><input type="text" name="post[Product][options]['+newOption+'][name]" value="Titel van de optie" />';
 	html = html + '<a href="#" onclick="deleteOption('+newOption+'); return false" style="float: right"><img src="/images/delete_option_button.png" /></a></div>';
 	html = html + '<table cellpadding="0" cellspacing="0" id="options_'+newOption+'"><tr id="subOption_'+newOption+'_0">';
 	html = html + '<td class="td1"><b>Naam</b></td>';
@@ -77,23 +86,23 @@ function addOption() {
 	// Er wordt een nieuwe optie toegevoegd
 	addNewOption(newOption);
 	
-	// De currentOption variable wordt opgeteld
-	currentOption = currentOption + 1;
-	
 	return false;
 }
 
 function addNewOption(id) {
-	option_id = $('#options_'+id+' tr:last').attr('id').split('_');
-	option_id = parseInt(option_id[1]) + 1;
 
-	html = '<tr id="subOption_'+id+'_'+option_id+'"><td><input type="text" name="option['+id+']['+option_id+'][name]" class="opt1" /></td>';
-	html = html + '<td><input type="text" name="option['+id+']['+option_id+'][price]" class="opt2" /></td>';
-	html = html + '<td><select name="option['+id+']['+option_id+'][type]" class="opt3"><option value="">Vast</option><option value="">Meerprijs</option></select>';
-	html = html + '</td><td><input type="text" name="option['+id+']['+option_id+'][article_id]" class="opt4" /></td>';
-	html = html + '<td><a href="#" onclick="deleteSubOption('+id+', '+option_id+')" title="Verwijderen" style="margin-left: 30px"><img src="/images/delete_icon.png" /></a></td></tr>';
+	option_id = $('#options_'+id+' tr:last').attr('id').split('_');
+	option_id = parseInt(option_id[2]) + 1;
+
+	html = '<tr id="subOption_'+id+'_'+option_id+'"><td><input type="text" name="post[Product][options]['+id+']['+option_id+'][name]" class="opt1" /></td>';
+	html = html + '<td><input type="text" name="post[Product][options]['+id+']['+option_id+'][price]" class="opt2 suboptprice" /></td>';
+	html = html + '<td><select name="post[Product][options]['+id+']['+option_id+'][type]" class="opt3"><option value="1">Vast</option><option value="2">Meerprijs</option></select>';
+	html = html + '</td><td><input type="text" name="post[Product][options]['+id+']['+option_id+'][article_id]" class="opt4" /></td>';
+	html = html + '<td><a href="#" onclick="deleteSubOption('+id+', '+option_id+'); return false" title="Verwijderen" style="margin-left: 30px"><img src="/images/delete_icon.png" /></a></td></tr>';
 	
 	$('#options_'+id).append(html);
+	
+	createEvents();
 	
 	return false;
 }
@@ -103,6 +112,12 @@ function deleteSubOption(parent_id, id) {
 	
 	$('#subOption_'+parent_id+'_'+id).remove();
 	
+	if ($('#optErr_'+parent_id+'_'+id).length > 0) {
+		$('#optErr_'+parent_id+'_'+id).remove();
+	}
+	
+	return false;
+	
 }
 
 function deleteOption(id) {
@@ -110,6 +125,8 @@ function deleteOption(id) {
 	if (confirm('Weet u zeker dat u deze optie wilt verwijderen ?')) {
 		$('#head_option_'+id).remove();
 	}
+	
+	return false;
 
 }
 
@@ -211,7 +228,7 @@ function updateIndex() {
 		// De divisions worden leeggemaakt
 		$('#list_overview').html('');
 		$('#detail_overview').html('');
-		
+
 		$.each(obj['items'], function(key, value) {
 			$.each(value, function(key1, val1) {
 		
@@ -278,5 +295,29 @@ function updatePage(action) {
 	});
 	
 	return false;
+	
+}
+
+
+
+function createError(id1, id2, field, error) {
+	
+	if ($('#subOption_'+id1+'_'+id2).attr('class') == 'trError') {
+		$('#optErr_'+id1+'_'+id2+' span').append('<br />'+error)
+	} else {
+		$('#subOption_'+id1+'_'+id2).addClass('trError');	
+		$('#subOption_'+id1+'_'+id2).after('<tr class="trError" id="optErr_'+id1+'_'+id2+'"><td colspan="5"><span>'+error+'</span></td></tr>');
+	}
+	
+}
+
+
+function createEvents() {
+	
+	$('.suboptprice').blur(function() {
+		if ($(this).val() == '0') {
+			$(this).val('0.00');
+		}
+	});
 	
 }

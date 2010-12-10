@@ -84,15 +84,20 @@
 							<span style="margin-top: 12px"><b>Let op!</b> Prijzen dient u altijd <b>exclusief</b> BTW in te voeren, voor meer info klik <u>hier</u>.</span>
 						
 							<div id="product_outer" style="{useOptionsPrice}">
-								<div id="product_opts">
-								
-									<div class="head_option">
-										<div class="head_option_opts">
-											<input type="text" name="" value="Titel van de optie" />
+							
+							<div id="product_opts">
+							
+								[START option]
+									<div class="head_option" id="head_option_{option_id}">
+										<div class="head_option_opts" id="option_{option_id}">
+											<input type="text" name="post[Product][options][{option_id}][name]" value="{name}" />
+											<a href="#" onclick="deleteOption({option_id}); return false" style="float: right">
+												<img src="/images/delete_option_button.png" />
+											</a>
 										</div>
 										
-										<table cellpadding="0" cellspacing="0">
-											<tr>
+										<table cellpadding="0" cellspacing="0" id="options_{option_id}">
+											<tr id="subOption_{option_id}_0">
 												<td class="td1"><b>Naam</b></td>
 												<td class="td2"><b>Prijs</b></td>
 												<td class="td3"><b>Prijs optie</b></td>
@@ -100,48 +105,73 @@
 												<td class="td5"><b>Verwijderen</b></td>
 											</tr>
 											
-											<tr>
-												<td><input type="text" name="option_1_1_name" class="opt1" /></td>
-												<td><input type="text" name="option_1_1_price" class="opt2" /></td>
-												<td>
-													<select name="option_1_1_price_option" class="opt3">
-														<option value="">Vast</option>
-														<option value="">Meerprijs</option>
-													</select>
-												</td>
-												<td><input type="text" name="option_1_1_article_id" class="opt4" /></td>
-												<td>Verwijderen</td>
-											</tr>
+											[START sub_option]
+												<tr id="subOption_{option_id}_{suboption_id}">
+													<td>
+														<div id="parent_{option_id}_{suboption_id}_name">
+															<input type="text" name="post[Product][options][{option_id}][{suboption_id}][name]" value="{name}" class="opt1" />
+														</div>
+													</td>
+												
+													<td>
+														<div id="parent_{option_id}_{suboption_id}_price">
+															<input type="text" name="post[Product][options][{option_id}][{suboption_id}][price]" value="{price}" class="opt2 suboptprice" />
+														</div>
+													</td>
+													
+													<td>
+														<div id="parent_{option_id}_{suboption_id}_type">
+															<select name="post[Product][options][{option_id}][{suboption_id}][type]" class="opt3">
+																<option value="1">Vast</option>
+																<option value="2">Meerprijs</option>
+															</select>
+														</div>
+													</td>
+													
+													<td>
+														<div id="parent_{option_id}_{suboption_id}_article_id">
+															<input type="text" name="post[Product][options][{option_id}][{suboption_id}][article_id]"  value="{article_id}" class="opt4" />
+														</div>
+													</td>
+													
+													<td>
+														<a href="#" onclick="deleteSubOption({option_id}, {suboption_id}); return false" title="Verwijderen" style="margin-left: 30px">
+															<img src="/images/delete_icon.png" />
+														</a>
+													</td>
+												</tr>
+											[END sub_option]
 											
-											<tr>
-												<td><input type="text" name="option_1_1_name" class="opt1" /></td>
-												<td><input type="text" name="option_1_1_price" class="opt2" /></td>
-												<td>
-													<select name="option_1_1_price_option" class="opt3">
-														<option value="">Vast</option>
-														<option value="">Meerprijs</option>
-													</select>
-												</td>
-												<td><input type="text" name="option_1_1_article_id" class="opt4" /></td>
-												<td>Verwijderen</td>
-											</tr>
 										</table>
+										
+										<div class="head_options_add">
+											<a href="#" title="" onclick="addNewOption({option_id}); return false">
+												<img src="/images/add_option_button.png" />
+											</a>
+										</div>
 									</div>	
-									
-									
-								</div>
+								[END option]
 								
-								<a href="#" title="" onclick="addOption(); return false">Optie toevoegen</a>
+								<script type="text/javascript">
+									$(document).ready(function() {
+										createEvents();
+									});
+								</script>
+							
+							</div>
+								
+								<a href="#" title="" onclick="addOption(); return false" style="margin-top: 15px">
+									<img src="{http}/images/add_option.png" />
+								</a>
 
 								<div style="width: 100%; height: 22px"> &nbsp; </div>
 							</div>
 						</div>
 						</div>
 						</div>
-						<script type="text/javascript">
-							var currentOption = 1;
-						</script>
-						<input type="hidden" name="post[Product][options]" id="options" value="{inputOptionsHidden}" />
+
+
+						<input type="hidden" name="post[Product][use_options]" id="options" value="{inputOptionsHidden}" />
 									
 					
 					<div style="width: 100%; height: 50px"> &nbsp; </div>
@@ -235,9 +265,27 @@
 				</fieldset>
 			</form>
 			
-			<script type="text/javascript">
-				var currentOption = 1;
-			</script>
+			[START json_errors]
+				<script type="text/javascript">
+					var errors = jQuery.parseJSON('{json}');
+
+					$.each(errors, function(key, val) {
+						$.each(val, function(key1, val1) {
+							$.each(val1, function(key2, val2) {
+								createError(key, key1, key2, val2);
+							});
+						});
+					});
+				</script>
+			[END json_errors]
+			
+			[START newOptions]
+				<script type="text/javascript">
+					$(document).ready(function() {
+						addOption();
+					});
+				</script>
+			[END newOptions]
 			
 		</div>
 	[END add]

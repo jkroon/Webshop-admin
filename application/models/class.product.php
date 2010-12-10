@@ -11,70 +11,158 @@ class Product_model extends model {
     function beforeValidates($data) {
     	
     	// Eventuele productvariaties worden getest
-    	if ($data['Product']['options'] == 'true') {
+    	if ($data['Product']['use_options'] == 'true') {
     		
-    		if (!is_array($this -> validateErrors)) {
-    			$this -> validateErrors = array();
-    		}
-    		
-    		foreach($data['Product']['priceOptions'] as $key=>$value) {
+    		// De validateErrors worden aangemaakt
+    		foreach($data['Product']['options'] as $key=>$array) {
     			
-    				// De naam wordt gecontroleerd
-    				if (empty($value['name'])) {
-    					$this -> validateErrors['Product']['productOptions'][$key]['name'] = 'Dit is een verplicht veld';
+    			// De naam van de optie wordt gecontroleerd
+    			if (isset($array['name']) && empty($array['name'])) {
+    				$this -> validateErrors['Product']['options'][$key]['name'] = 'Dit is een verplicht veld';
+    				unset($array['name']);
+    			} elseif(isset($array['name'])) {
+    				unset($array['name']);
+    			}
+    			
+    			// De sub-opties worden gecontroleerd
+    			foreach($array as $subKey=>$subArr) {
+    				
+    				// De naam van de suboptie wordt gecontroleerd
+    				if (!isset($subArr['name']) || empty($subArr['name'])) {
+    					$this -> validateErrors['Product']['options'][$key][$subKey]['name'] = 'Het veld <b>naam</b> is een verplicht veld';
     				}
     				
-    				// De prijs wordt gecontroleerd
-    				if (!preg_match("#^[0-9]{1,5}(\.|,){0,1}[0-9]{0,2}$#", $value['price'])) {
-    					$this -> validateErrors['Product']['productOptions'][$key]['price'] = 'U heeft een ongeldig bedrag ingevuld';
+    				if (empty($subArr['price']) || !preg_match("/^[0-9]{1,5}(\.?[0-9]{2})?$/", $subArr['price'])) {
+    					$this -> validateErrors['Product']['options'][$key][$subKey]['price'] = 'U heeft het veld <b>prijs</b> niet/incorrent ingevuld. Voorbeeld: &euro;50,00 vult u in als <b>50.00</b> of <b>50</b>';
     				}
+    				
+    			}
     			
     		}
     		
-    	} else {
-    		
-    		// De prijs wordt gecontroleerd
-	    	if (!preg_match("#^[0-9]{1,5}(\.|,){0,1}[0-9]{0,2}$#", $data['Product']['price'])) {
-	    		$this -> validateErrors['Product']['price'] = 'U heeft een ongeldig bedrag ingevuld';
-	    	}
-	    	
     	}
     	
     }
     
     
     function afterSave($data) {
-    	
-    	
-    	// Indien er product opties aanwezig waren, dan worden deze verwijderd
-    	if (isset($data['Product']['id'])) {
-    		
-    		// Alle eventuele product options worden verwijderd
-    		$this -> Product_option -> delete(array('product_id' => $data['Product']['id']));
-    		
-    	}
-    	
+    	  	
     	
     	// Er wordt bekeken of er product opties aanwezig zijn
-    	if ($data['Product']['options'] == 'true') {
+    	if ($data['Product']['use_options'] == 'true') {
     		
-    		// Het ID wordt bepaald
-    		if (isset($data['Product']['id'])) {
-    			$id = $data['Product']['id'];
-    		} else {
-    			$id = $this -> insert_id;
+        	// Alle productopties worden opgehaald
+    		$result = $this -> Product_option -> find('id', array(
+    			'conditions' => array(
+    				'product_id' => $data['Product']['id'],
+    			)
+    		));
+    		
+    		// Alle optie ID's worden in een array gezet voor het verwijderen hiervan
+    		$option_ids = array();
+        	$suboption_ids = array();
+        	
+    		foreach($result as $obj) {
+    			$option_ids[] = $obj['Product_option']['id'];
+    			
+	    		$result1 = $this -> Product_option -> Product_suboption -> find('id', array(
+	    			'conditions' => array(
+	    				'parent_id' => $obj['Product_option']['id']
+	    			)
+	    		));
+	    		
+	    		// Alle product subopties worden opgehaald
+	    		foreach($result1 as $obj1) {
+	    			$suboption_ids[] = $obj1['Product_suboption']['id'];
+	    		}
     		}
     		
-    		// De product options worden opgeslagen in de database
-    		foreach($data['Product']['priceOptions'] as $key=>$fields) {
+
+    		
+    		foreach($data['Product']['options'] as $key=>$array) {
+
     			
-    			$array = array();
-    			$array['Product_option']['name'] = $fields['name'];
-    			$array['Product_option']['price'] = $fields['price'];
-    			$array['Product_option']['product_id'] = $id;
+    			// De product array wordt aangemaakt
+    			$toSave = array(
+    				'Product_option' => array(
+    					'name' => $array['name'],
+    					'product_id' => $data['Product']['id']
+    				)
+    			);
     			
-    			$this -> Product_option -> save($array);
     			
+    			// Er wordt gekeken of de optie al bestaat
+    			$result = $this -> Product_option -> find('id', array(
+    				'conditions' => array(
+    					'id' => $key,
+    					'product_id' => $data['Product']['id']
+    				)
+    			));
+    			    			
+    			
+    			// Het ID wordt uit de array gehaald om te verwijderen
+    			if ($this -> Product_option -> num_rows > 0) {
+    				$array_key = array_search($key, $option_ids);
+    				unset($option_ids[$array_key]);
+    				
+    				$toSave['Product_option']['id'] = $key;
+    			} else {
+    				
+    			}
+
+    			// De product optie wordt opgeslagen
+    			$this -> Product_option -> save($toSave);
+    			
+    			// De naam wordt verwijderd uit de array
+    			unset($array['name']);
+    			
+    			
+    			
+    			// Alle opties worden door de loop gehaald
+    			foreach($array as $key1=>$array1) {
+    				
+    				// De save array wordt aangemaakt
+    				$toSave = array(
+    					'Product_suboption' => array(
+    						'name' => $array1['name'],
+    						'price' => $array1['price'],
+    						'type' => $array1['type'],
+    						'article_id' => $array1['article_id'],
+    						'parent_id' => $key
+    					)
+    				);
+    				
+    				// Er wordt gekeken of de product optie al bestaat
+    				$result = $this -> Product_option -> Product_suboption -> find('id', array(
+    					'conditions' => array(
+    						'parent_id' => $key,
+    				        'id' => $key1
+    					)
+    				));
+    				
+    				if ($this -> Product_option -> Product_suboption -> num_rows > 0) {
+    					$toSave['Product_suboption']['id'] = $result[0]['Product_suboption']['id'];
+    					
+    					$array_key = array_search($result[0]['Product_suboption']['id'], $suboption_ids);
+    					unset($suboption_ids[$array_key]);
+    				}
+    				
+    				
+    				// De opties worden opgeslagen
+    				$this -> Product_option -> Product_suboption -> save($toSave);
+    				
+    			}
+    			
+    		}
+    		
+    		foreach($suboption_ids as $id) {
+    			$this -> Product_option -> Product_suboption -> delete($id);
+    		}
+    		
+    		
+        	// Alle opties worden verwijderd
+    		foreach($option_ids as $id) {
+    			$this -> Product_option -> delete($id);
     		}
     		
     	}

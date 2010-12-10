@@ -61,7 +61,7 @@
 
 
 /* Product opties */
-.head_option {font-size: 11px; margin-top: 20px; margin-bottom: 20px; background: #d9e9f1; padding: 10px}
+.head_option {font-size: 11px; margin-top: 10px; margin-bottom: 0px; background: #d9e9f1; border-bottom: 1px solid #3b8db7; border-top: 3px solid #3b8db7; padding: 10px 10px 0 10px}
 .head_option_opts {width: 100%}
 .head_option table {width: 100%; float: left; border: 0; padding: 0; margin-top: 5px; font-size: 11px}
 .head_option td {height: 27px}
@@ -77,3 +77,6 @@
 .opt4 {width: 120px!important}
 
 .head_options_add {margin-top: 10px}
+.trError {background: #ffcfcf}
+.trError td {padding: 15px 0 5px 10px}
+.trError span {font-size: 12px; line-height: 18px; color: #323232}
