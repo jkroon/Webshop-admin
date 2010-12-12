@@ -30,6 +30,12 @@ class formPlugin extends plugin {
     public function bindModel($model) {
          $this -> model = $model;
     }
+    
+    
+    // De functie voor het meegeven van de post data
+    public function setData($data) {
+         $this -> post = $data;
+    }
 
 
     // Het aanmaken van het formulier
@@ -278,9 +284,9 @@ class formPlugin extends plugin {
 
 
               // Er wordt gekeken of er een POST aanvraag is, zo ja dan worden de values geladen
-              if ($this -> model && $this -> model -> data) {
-                   if (array_key_exists($table, $this -> model -> data)) {
-                        foreach($this -> model -> data[$table] as $field=>$value) {
+              if ($this -> post) {
+                   if (array_key_exists($table, $this -> post)) {
+                        foreach($this -> post[$table] as $field=>$value) {
                              $this -> attributes[$table][$field]['value'] = $value;
                         }
                    }
@@ -341,8 +347,8 @@ class formPlugin extends plugin {
 
 
                       // Indien er sprake is van een checkbox, wordt deze gechecked indien nodig
-                      if ($attributes['type'] == 'checkbox' && $this -> model -> data[$table]) {
-                           if (!empty($this -> model -> data[$table][$field])) {
+                      if ($attributes['type'] == 'checkbox' && $this -> post[$table]) {
+                           if (!empty($this -> post[$table][$field])) {
                                 $attributes['checked'] = 'checked';
                            } else {
                                 if (isset($attributes['checked'])) {
@@ -452,7 +458,11 @@ class formPlugin extends plugin {
 
 			       
 			       // Het select element wordt aangemaakt
-			       $html .= '<select name="post['. ucfirst(strtolower($table)) .']['. strtolower($field) .']" id="input'. ucfirst(strtolower($table)) . ucfirst(strtolower($field)) .'">';
+			       $html .= '<select name="post['. ucfirst(strtolower($table)) .']['. strtolower($field) .']" id="input'. ucfirst(strtolower($table)) . ucfirst(strtolower($field)) .'" ';
+			       foreach($attributes as $attrName=>$attrVal) {
+			       		$html .= $attrName . '="'. $attrVal .'" ';
+			       }
+			       $html .= '>';
 
 			       // Er wordt bekeken of auto_select van toepassing is
 			       if (array_key_exists('auto_select', $attributes)) {
@@ -472,8 +482,8 @@ class formPlugin extends plugin {
 			       
 			       if (array_key_exists('options', $attributes) && count($attributes['options']) > 0) {
 
-			       		if ($this -> model && isset($this -> model -> data[ucfirst(strtolower($table))][$field])) {
-			       			$id = $this -> model -> data[ucfirst(strtolower($table))][$field];			       			
+			       		if ($this -> post && isset($this -> post[ucfirst(strtolower($table))][$field])) {
+			       			$id = $this -> post[ucfirst(strtolower($table))][$field];			       			
 			       		} else {
 			       			$id = false;
 			       		}
