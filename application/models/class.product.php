@@ -40,6 +40,12 @@ class Product_model extends model {
     			
     		}
     		
+    	} else {
+    		
+    		if (empty($data['Product']['price']) || !preg_match("/^[0-9]{1,5}(\.?[0-9]{2})?$/", $data['Product']['price'])) {
+    			$this -> validateErrors['Product']['price'] = 'U heeft dit veld niet/incorrent ingevuld. Voorbeeld: &euro;50,00 vult u in als <b>50.00</b> of <b>50</b>';
+    		}
+    		
     	}
     	
     }
@@ -98,7 +104,10 @@ class Product_model extends model {
     					'product_id' => $data['Product']['id']
     				)
     			));
-    			    			
+
+    			// Het parent id wordt leegemaakt
+    			$parent_id = null;
+    			
     			
     			// Het ID wordt uit de array gehaald om te verwijderen
     			if ($this -> Product_option -> num_rows > 0) {
@@ -106,12 +115,15 @@ class Product_model extends model {
     				unset($option_ids[$array_key]);
     				
     				$toSave['Product_option']['id'] = $key;
-    			} else {
-    				
+    				$parent_id = $key;
     			}
 
     			// De product optie wordt opgeslagen
     			$this -> Product_option -> save($toSave);
+    			
+    			if (is_null($parent_id)) {
+    				$parent_id = $this -> Product_option -> insert_id;
+    			}
     			
     			// De naam wordt verwijderd uit de array
     			unset($array['name']);
@@ -128,14 +140,14 @@ class Product_model extends model {
     						'price' => $array1['price'],
     						'type' => $array1['type'],
     						'article_id' => $array1['article_id'],
-    						'parent_id' => $key
+    						'parent_id' => $parent_id
     					)
     				);
     				
     				// Er wordt gekeken of de product optie al bestaat
     				$result = $this -> Product_option -> Product_suboption -> find('id', array(
     					'conditions' => array(
-    						'parent_id' => $key,
+    						'parent_id' => $parent_id,
     				        'id' => $key1
     					)
     				));
@@ -163,6 +175,43 @@ class Product_model extends model {
         	// Alle opties worden verwijderd
     		foreach($option_ids as $id) {
     			$this -> Product_option -> delete($id);
+    		}
+    		
+    	} else {
+    		
+    		if (isset($data['Product']['id'])) {
+    			
+    			// Alle product opties worden opgezocht
+	    		$options = $this -> Product_option -> find('id', array(
+	    			'conditions' => array(
+	    				'product_id' => $data['Product']['id']
+	    			)
+	    		));
+	    		
+	    		
+	    		foreach($options as $option) {
+	    			$option = $option['Product_option'];
+	    			
+		    		// Alle product subopties worden opgehaald
+		    		$suboptions = $this -> Product_option -> Product_suboption -> find('id', array(
+		    			'conditions' => array(
+		    				'parent_id' => $option['id']
+		    			)
+		    		));
+		    		
+		    		foreach($suboptions as $suboption) {
+		    			$suboption = $suboption['Product_suboption'];
+		    			
+		    			$this -> Product_option -> Product_suboption -> delete($suboption['id']);
+		    		}
+		    		
+		    		
+		    		// De productoptie wordt verwijderd
+		    		$this -> Product_option -> delete($option['id']);
+		    		
+		    		
+	    		}
+	    		
     		}
     		
     	}

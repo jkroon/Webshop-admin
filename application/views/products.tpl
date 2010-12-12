@@ -15,13 +15,9 @@
 				</ul>
 			</div>
 			
-			<div id="list_overview" style="{listDiv}">
-				
-			</div>
+			<div id="list_overview" style="{listDiv}"> </div>
 			
-			<div id="detail_overview" style="{detailDiv}">
-
-			</div>
+			<div id="detail_overview" style="{detailDiv}"> </div>
 			
 			
 			<div id="pages_overview">
@@ -47,9 +43,11 @@
 			</script>
 			[END index_json]
 			
-		</div>
-		
+		</div>		
 	[END index]
+	
+	
+	
 
 	[START add]
 		<div id="product_form">
@@ -63,118 +61,133 @@
 					
 					{inputPrdName}
 					{inputPrdSelect}
+					{inputOnline}
 					
 					
 					<div style="width: 100%; height: 50px"> &nbsp; </div>
 					
 					<div class="prdTitle">	
-						<h2>Product prijs / opties</h2>
-					</div>					
+						<h2>Product prijs</h2>
+					</div>				
 					
-					<div id="product_options">
-						<ul>
-							<li id="priceBtn" class="{fixedPriceActive}"><a href="#" title="" onclick="switchPrice('price')">Vaste prijs</a></li>
-							<li id="optionsBtn" class="{optionsPriceActive}"><a href="#" title="" onclick="switchPrice('options')">Verschillende prijzen</a></li>
-						</ul>
+					<!--  Vaste product prijs -->
+					<div id="product_price">
+					
+						<span style="margin-top: 12px"><b>Let op!</b> Prijzen dient u altijd <b>exclusief</b> BTW in te voeren, voor meer info klik <u>hier</u>.</span>
+					
+						{inputPrdPrice}
+					
+					</div>
+					<!-- Vaste product prijs -->
+					
+					
+					<div class="prdTitle" style="margin-top: 50px">
+						<h2>Product opties</h2>
 					</div>
 					
-					<div id="productOptsContent">
-						<div style="padding-left: 15px">
+					<div style="margin-top: 10px" id="optionselector">						
+						<div style="width: 100%; margin-top: 6px">
+							<input type="radio" name="post[Product][use_options]" value="false" onclick="setOptions(false);" {noUseOptions}>
+							<span style="margin-left: 10px">Geen productopties gebruiken voor dit product</span>
+						</div>
 						
-							<span style="margin-top: 12px"><b>Let op!</b> Prijzen dient u altijd <b>exclusief</b> BTW in te voeren, voor meer info klik <u>hier</u>.</span>
-						
-							<div id="product_outer" style="{useOptionsPrice}">
-							
-							<div id="product_opts">
-							
-								[START option]
-									<div class="head_option" id="head_option_{option_id}">
-										<div class="head_option_opts" id="option_{option_id}">
-											<input type="text" name="post[Product][options][{option_id}][name]" value="{name}" />
-											<a href="#" onclick="deleteOption({option_id}); return false" style="float: right">
-												<img src="/images/delete_option_button.png" />
-											</a>
-										</div>
-										
-										<table cellpadding="0" cellspacing="0" id="options_{option_id}">
-											<tr id="subOption_{option_id}_0">
-												<td class="td1"><b>Naam</b></td>
-												<td class="td2"><b>Prijs</b></td>
-												<td class="td3"><b>Prijs optie</b></td>
-												<td class="td4"><b>Artikelnummer</b></td>
-												<td class="td5"><b>Verwijderen</b></td>
-											</tr>
-											
-											[START sub_option]
-												<tr id="subOption_{option_id}_{suboption_id}">
-													<td>
-														<div id="parent_{option_id}_{suboption_id}_name">
-															<input type="text" name="post[Product][options][{option_id}][{suboption_id}][name]" value="{name}" class="opt1" />
-														</div>
-													</td>
-												
-													<td>
-														<div id="parent_{option_id}_{suboption_id}_price">
-															<input type="text" name="post[Product][options][{option_id}][{suboption_id}][price]" value="{price}" class="opt2 suboptprice" />
-														</div>
-													</td>
-													
-													<td>
-														<div id="parent_{option_id}_{suboption_id}_type">
-															<select name="post[Product][options][{option_id}][{suboption_id}][type]" class="opt3">
-																<option value="1">Vast</option>
-																<option value="2">Meerprijs</option>
-															</select>
-														</div>
-													</td>
-													
-													<td>
-														<div id="parent_{option_id}_{suboption_id}_article_id">
-															<input type="text" name="post[Product][options][{option_id}][{suboption_id}][article_id]"  value="{article_id}" class="opt4" />
-														</div>
-													</td>
-													
-													<td>
-														<a href="#" onclick="deleteSubOption({option_id}, {suboption_id}); return false" title="Verwijderen" style="margin-left: 30px">
-															<img src="/images/delete_icon.png" />
-														</a>
-													</td>
-												</tr>
-											[END sub_option]
-											
-										</table>
-										
-										<div class="head_options_add">
-											<a href="#" title="" onclick="addNewOption({option_id}); return false">
-												<img src="/images/add_option_button.png" />
-											</a>
-										</div>
-									</div>	
-								[END option]
-								
-								<script type="text/javascript">
-									$(document).ready(function() {
-										createEvents();
-									});
-								</script>
-							
-							</div>
-								
-								<a href="#" title="" onclick="addOption(); return false" style="margin-top: 15px">
-									<img src="{http}/images/add_option.png" />
-								</a>
-
-								<div style="width: 100%; height: 22px"> &nbsp; </div>
-							</div>
+						<div style="width: 100%; margin-top: 11px">
+							<input type="radio" name="post[Product][use_options]" onclick="setOptions(true);" value="true" style="margin-top: 2px" {useOptions}>
+							<span style="margin-left: 10px; margin-top: 2px">Productopties gebruiken voor dit product</span>
 						</div>
-						</div>
-						</div>
-
-
-						<input type="hidden" name="post[Product][use_options]" id="options" value="{inputOptionsHidden}" />
-									
+					</div>
 					
+					<div id="product_outer" style="margin-top: 15px; {product_outer_style}">
+						
+						<span style="margin-top: 12px"><b>Let op!</b> Prijzen dient u altijd <b>exclusief</b> BTW in te voeren, voor meer info klik <u>hier</u>.</span>
+					
+						
+						<div id="product_opts">
+						
+							[START option]
+								<div class="head_option" id="head_option_{option_id}">
+									<div class="head_option_opts" id="option_{option_id}">
+										<input type="text" name="post[Product][options][{option_id}][name]" value="{name}" />
+										<a href="#" onclick="deleteOption({option_id}); return false" style="float: right">
+											<img src="/images/delete_option_button.png" />
+										</a>
+									</div>
+									
+									<table cellpadding="0" cellspacing="0" id="options_{option_id}">
+										<tr id="subOption_{option_id}_0">
+											<td class="td1"><b>Naam</b></td>
+											<td class="td2"><b>Prijs</b></td>
+											<td class="td3"><b>Prijs optie</b></td>
+											<td class="td4"><b>Artikelnummer</b></td>
+											<td class="td5"><b>Verwijderen</b></td>
+										</tr>
+										
+										[START sub_option]
+											<tr id="subOption_{option_id}_{suboption_id}">
+												<td>
+													<div id="parent_{option_id}_{suboption_id}_name">
+														<input type="text" name="post[Product][options][{option_id}][{suboption_id}][name]" value="{name}" class="opt1" />
+													</div>
+												</td>
+											
+												<td>
+													<div id="parent_{option_id}_{suboption_id}_price">
+														<input type="text" name="post[Product][options][{option_id}][{suboption_id}][price]" value="{price}" class="opt2 suboptprice" />
+													</div>
+												</td>
+												
+												<td>
+													<div id="parent_{option_id}_{suboption_id}_type">
+														<select name="post[Product][options][{option_id}][{suboption_id}][type]" class="opt3">
+															<option value="1">Vast</option>
+															<option value="2">Meerprijs</option>
+														</select>
+													</div>
+												</td>
+												
+												<td>
+													<div id="parent_{option_id}_{suboption_id}_article_id">
+														<input type="text" name="post[Product][options][{option_id}][{suboption_id}][article_id]"  value="{article_id}" class="opt4" />
+													</div>
+												</td>
+												
+												<td>
+													<a href="#" onclick="deleteSubOption({option_id}, {suboption_id}); return false" title="Verwijderen" style="margin-left: 30px">
+														<img src="/images/delete_icon.png" />
+													</a>
+												</td>
+											</tr>
+										[END sub_option]
+										
+									</table>
+									
+									<div class="head_options_add">
+										<a href="#" title="" onclick="addNewOption({option_id}); return false">
+											<img src="/images/add_option_button.png" />
+										</a>
+									</div>
+								</div>	
+							[END option]
+							
+							<script type="text/javascript">
+								$(document).ready(function() {
+									createEvents();
+								});
+							</script>
+						
+						</div>
+							
+							<a href="#" title="" onclick="addOption(); return false" style="margin-top: 15px">
+								<img src="{http}/images/add_option.png" />
+							</a>
+
+							<div style="width: 100%; height: 22px"> &nbsp; </div>
+							
+					</div>
+									
+					<!-- Spacer -->
 					<div style="width: 100%; height: 50px"> &nbsp; </div>
+					<!-- Spacer -->
 					
 								
 					[START upload_image]		
@@ -256,6 +269,44 @@
 						});
 					</script>
 					
+					
+					<div class="prdTitle" style="margin-top: 50px">
+						<h2>Overige opties</h2>
+					</div>
+					
+					<div style="margin: 20px 0 0 10px">
+						<h3 style="font-size: 13px">BTW Tarief</h3>
+						
+						<div style="width: 100%; margin-top: 6px">
+							<input type="radio" name="custom_btw" value="true">
+							<span style="margin-left: 10px">Standaard BTW tarief gebruiken (als ingesteld in configuratie)</span>
+						</div>
+						
+						<div style="width: 100%; margin-top: 11px">
+							<input type="radio" name="custom_btw" value="true" style="margin-top: 2px">
+							<span style="margin-left: 10px; margin-top: 2px">Zelf tarief invullen:</span>
+							<input name="post[Product][btw]" id="inputProductBtw" style="width: 50px; margin-left: 10px" type="text">
+							<span style="margin-left: 5px; margin-top: 2px">%</span>
+						</div>
+					</div>
+					
+					
+					<div style="margin: 20px 0 0 10px">
+						<h3 style="font-size: 13px">Gewicht</h3>
+						
+						{inputWeight}
+						
+						<span style="width: 100%; margin-top: 2px; font-size: 11px">Laat dit veld leeg als u geen gebruik maakt van verzendkosten.</span>
+					</div>
+					
+					<div style="margin: 25px 0 0 10px">
+						<h3 style="font-size: 13px">Voorraadbeheer</h3>
+						
+						{inputUseStock}
+					</div>
+					
+					
+					
 					[START formSubmit]
 					<div class="formDivPlaceholder">
 						<input type="submit" style="padding: 10px 20px; margin-top: 15px; float: right" value="{button}" />
@@ -287,6 +338,8 @@
 				</script>
 			[END newOptions]
 			
+			
+			</div>
 		</div>
 	[END add]
 

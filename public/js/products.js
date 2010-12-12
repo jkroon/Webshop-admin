@@ -27,7 +27,7 @@ function switchPrice(type) {
 	var priceBtn = '#priceBtn';
 	
 	optionsObj = '#product_outer';
-	priceObj = '#product_price'
+	priceObj = '#product_price';
 	
 	if (type == 'options') {
 		if ($(optionsObj).css('display') == 'none') {
@@ -37,7 +37,7 @@ function switchPrice(type) {
 			$(priceObj).css('display', 'none');
 			$(optionsObj).css('display', 'block');
 
-			$('#options').val('true');
+			$('#use_options').val('true');
 		}
 	} else if(type == 'price') {
 		if ($(priceObj).css('display') == 'none') {
@@ -47,7 +47,7 @@ function switchPrice(type) {
 			$(optionsObj).css('display', 'none');
 			$(priceObj).css('display', 'block');
 
-			$('#options').val('false');
+			$('#use_options').val('false');
 		}					
 	}
 	
@@ -183,43 +183,14 @@ function handleResponse(data) {
 	
 }
 
-function switchView(type) {
-	detailBtn = '#li_detailView';
-	listBtn = '#li_listView';
-	
-	detailObj = '#detail_overview';
-	listObj = '#list_overview';
-	
-	if (type == 'detail') {
-		if ($(detailObj).css('display') == 'none') {
-			$(detailBtn).addClass('viewAct');
-			$(listBtn).removeClass('viewAct');
-			
-			
-			$(listObj).fadeOut(450, function() {
-				$(detailObj).fadeIn(450);
-			});
-			
-			$.ajax({
-				url: '/products/setview/detail/'
-			});
-		}
-	} else if (type == 'list') {
-		if ($(listObj).css('display') == 'none') {
-			$(listBtn).addClass('viewAct');
-			$(detailBtn).removeClass('viewAct');
-			
-			$(detailObj).fadeOut(450, function() {
-				$(listObj).fadeIn(450);
-			});
-			
-			$.ajax({
-				url: '/products/setview/none/'
-			});
-		}
+function setOptions(bool) {
+
+	if (bool) {
+		$('#product_outer').slideDown(400);
+	} else {
+		$('#product_outer').slideUp(400);
 	}
 	
-	return false;
 }
 
 function updateIndex() {

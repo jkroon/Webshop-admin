@@ -176,15 +176,8 @@ class products extends controller {
 		if ($this -> post) {
 			
 			if ($this -> Product -> save($this -> post)) {
-				//$this -> setFlash('success', 'Het product is succesvol aangepast');
-				//navigate(array('products'));
-			}
-
-			// De prodct opties worden geladen
-			if ($this -> post['Product']['use_options'] == 'true') {
-				$product_options = true;
-			} else {
-				$product_options = false;
+				$this -> setFlash('success', 'Het product is succesvol aangepast');
+				navigate(array('products'));
 			}
 			
 		} else {		
@@ -234,16 +227,20 @@ class products extends controller {
 						$this -> post['Product']['options'][$id][$sub_id] = $sub_array;
 					}
 				}
-				
-				// De product opties string wordt op true gezet
-				$product_options = true;
-			 
-			} else {
-				$product_options = false;
+							 
 			}
 
+			
+			// Het standaard BTW tarief wordt ingeladen
+			if (empty($this -> post['Product']['btw'])) {
+				$this -> post['Product']['btw'] = read_option('btw');
+			}
 
 		}
+		
+		
+		// Er wordt bekeken of er product opties aanwezig zijn
+		$product_options = ($this -> post['Product']['use_options'] == 'true' ? true : false);
 		
 		// Het formulier wordt aangeroepen
 		$this -> form('edit', $product_options);
@@ -384,11 +381,16 @@ class products extends controller {
 		
 		// Het formulier wordt geinstantieerd en er wordt een model aan toegewezen
 		$form = new formPlugin();
+		$form -> setData($this -> post);
 		$form -> bindModel($this -> Product);
 		
 		// De selectie box voor de categorie
-		$form -> select('category_id', array('options' => $options, 'label' => 'Categorie'), 'Product');		
+		$form -> select('category_id', array('options' => $options, 'label' => 'Categorie', 'multiple' => '', 'style' => 'height: 80px'), 'Product');		
 		$this -> template -> assign('inputPrdSelect', $form -> getOutput());
+		
+		// De checkbox voor het product aftief / inactief
+		$form -> checkbox('online', array('label' => 'Tonen in webwinkel', 'defaultChecked' => true), 'Product');
+		$this -> template -> assign('inputOnline', $form -> getOutput());
 				
 		// De productnaam
 		$form -> text('name', array('label' => 'productnaam'), 'Product');
@@ -405,6 +407,16 @@ class products extends controller {
 		$this -> template -> assign('inputDescription', $form -> getOutput());
 		
 		
+		// Het gewicht van het product
+		$form -> text('weight', array('style' => 'width: 80px', 'label' => 'Gewicht (in grammen)'), 'Product');
+		$this -> template -> assign('inputWeight', $form -> getOutput());
+		
+		
+		// Voorraadbeheer gebruiken
+		$form -> checkbox('use_stock', array('label' => 'Voorraadbeheer gebruiken', 'defaultChecked' => true), 'Product');
+		$this -> template -> assign('inputUseStock', $form -> getOutput());
+		
+		
 		// het hidden input veld wordt verteld of er gebruik wordt gemaakt van product opties
 		$this -> template -> assign('inputOptionsHidden', ($product_options ? 'true' : 'false'));
 		
@@ -412,12 +424,8 @@ class products extends controller {
 		// De product opties worden ingeladen
 		if ($product_options) {			
 
-			// Er wordt geswitched naar het juiste block
-			$this -> template -> assign(array('useOptionsPrice' => 'display: block',
-											  'useFixedPrice' => 'display: none'));
-			
-			$this -> template -> assign(array('fixedPriceActive' => '',
-											   'optionsPriceActive' => 'viewAct'));
+			// Er wordt geswitched naar het juiste block		
+			$this -> template -> assign('useOptions', 'checked');
 			
 			// Alle product opties worden ingeladen
 			foreach($this -> post['Product']['options'] as $key=>$array) {
@@ -457,11 +465,8 @@ class products extends controller {
 		} else {
 			
 			// Er wordt een enkel block geopend in de template
-			$this -> template -> assign(array('useOptionsPrice' => 'display: none',
-											  'useFixedPrice' => 'display: block'));			
-			
-			$this -> template -> assign(array('fixedPriceActive' => 'viewAct',
-											   'optionsPriceActive' => ''));
+			$this -> template -> assign('product_outer_style', 'display: none');				
+			$this -> template -> assign('noUseOptions', 'checked');
 			
 			$this -> template -> newBlock('newOptions');
 			
