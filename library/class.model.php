@@ -40,7 +40,7 @@ class model {
           
           // Indien de functie beforeSave aanwezig is, wordt deze geladen
           if (method_exists($this, 'beforeSave')) {
-         		$this -> beforeSave($array);
+         		$array = $this -> beforeSave($array);
           }
           
 
@@ -67,6 +67,10 @@ class model {
                               if (array_key_exists($var['Field'], $fields) && !empty($fields[$var['Field']])) {
                                    $tableFields[] = $var['Field'];
                               }
+                              
+                              if(array_key_exists($var['Field'], $fields) && is_null($fields[$var['Field']])) {
+                                   $tableFields[] = $var['Field'];
+                              }
                          }
 
 
@@ -77,14 +81,21 @@ class model {
                          	$query = "UPDATE `". safe($table) ."` SET ";
                          	
                          	foreach($tableFields as $field) {
-                         		$query .= "`". $field ."` = '". safe($fields[$field]) ."', ";
+                         		
+                         		if (is_null($fields[$field])) {
+                         			$value = 'NULL';
+                         		} else {
+                         			$value = "'". safe($fields[$field]) ."'";
+                         		}
+                         		
+                         		$query .= "`". $field ."` = ". $value .", ";
                          	}
                          	
                          	$query = substr($query, 0, -2);
                          	
                          	// Het ID wordt meegegeven
                          	$query .= " WHERE `id` = '". safe($fields['id']) ."'";
-                         	
+
                          	// De query wordt uitgevoerd
                          	$result = self::query($query);
                          	
@@ -114,7 +125,14 @@ class model {
 
                               // De VALUES worden in de query geplaatst
                               foreach($tableFields as $field) {
-                                   $query .= "'". safe($fields[$field]) ."', ";
+                              	
+                              		if (is_null($fields[$field])) {
+                              			$value = null;
+                              		} else {
+                              			$value = "'". safe($fields[$field]) . "'";
+                              		}
+                              	
+                                   $query .= $value .", ";
                               }
 
                               // De laatste komma wordt van de query afgehaald
