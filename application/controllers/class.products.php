@@ -176,8 +176,8 @@ class products extends controller {
 		if ($this -> post) {
 			
 			if ($this -> Product -> save($this -> post)) {
-				$this -> setFlash('success', 'Het product is succesvol aangepast');
-				navigate(array('products'));
+				//$this -> setFlash('success', 'Het product is succesvol aangepast');
+				//navigate(array('products'));
 			}
 			
 		} else {		
@@ -232,8 +232,10 @@ class products extends controller {
 
 			
 			// Het standaard BTW tarief wordt ingeladen
-			if (empty($this -> post['Product']['btw'])) {
-				$this -> post['Product']['btw'] = read_option('btw');
+			if (is_null($this -> post['Product']['tax'])) {
+				$this -> post['Product']['use_tax'] = true;
+			} else {
+				$this -> post['Product']['use_tax'] = false;
 			}
 
 		}
@@ -385,7 +387,7 @@ class products extends controller {
 		$form -> bindModel($this -> Product);
 		
 		// De selectie box voor de categorie
-		$form -> select('category_id', array('options' => $options, 'label' => 'Categorie', 'multiple' => '', 'style' => 'height: 80px'), 'Product');		
+		$form -> select('category_id', array('options' => $options, 'label' => 'Categorie'), 'Product');		
 		$this -> template -> assign('inputPrdSelect', $form -> getOutput());
 		
 		// De checkbox voor het product aftief / inactief
@@ -416,9 +418,15 @@ class products extends controller {
 		$form -> checkbox('use_stock', array('label' => 'Voorraadbeheer gebruiken', 'defaultChecked' => true), 'Product');
 		$this -> template -> assign('inputUseStock', $form -> getOutput());
 		
+		// Het BTW tarief wordt gechecked
+		$use_tax = ($this -> post['Product']['use_tax'] == 'false' ? false : true);
 		
-		// het hidden input veld wordt verteld of er gebruik wordt gemaakt van product opties
-		$this -> template -> assign('inputOptionsHidden', ($product_options ? 'true' : 'false'));
+		if ($use_tax) {
+			$this -> template -> assign('customTax', 'checked');
+			$this -> template -> assign('tax', $this -> post['Product']['tax']);			
+		} else {
+			$this -> template -> assign('localTax', 'checked');
+		}
 		
 		
 		// De product opties worden ingeladen
@@ -500,6 +508,11 @@ class products extends controller {
 				$this -> template -> newBlock('uploaded_image');
 				$this -> template -> assign($image);
 			}
+		}
+		
+		// Indien noodzakelijk wordt er een fout in de template aangemaakt
+		if (isset($this -> Product -> validateErrors['Product']['tax'])) {
+			$this -> template -> newBlock('tax_error');
 		}
 		
 		

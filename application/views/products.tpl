@@ -274,24 +274,30 @@
 						<h2>Overige opties</h2>
 					</div>
 					
-					<div style="margin: 20px 0 0 10px">
+					<div style="margin: 20px 0 0 0">
 						<h3 style="font-size: 13px">BTW Tarief</h3>
 						
 						<div style="width: 100%; margin-top: 6px">
-							<input type="radio" name="custom_btw" value="true">
+							<input type="radio" name="post[Product][use_tax]" value="false" {localTax}>
 							<span style="margin-left: 10px">Standaard BTW tarief gebruiken (als ingesteld in configuratie)</span>
 						</div>
 						
 						<div style="width: 100%; margin-top: 11px">
-							<input type="radio" name="custom_btw" value="true" style="margin-top: 2px">
+							<input type="radio" name="post[Product][use_tax]" value="true" style="margin-top: 2px" {customTax}>
 							<span style="margin-left: 10px; margin-top: 2px">Zelf tarief invullen:</span>
-							<input name="post[Product][btw]" id="inputProductBtw" style="width: 50px; margin-left: 10px" type="text">
+							<input name="post[Product][tax]" id="inputProductBtw" style="width: 50px; margin-left: 10px" value="{tax}" type="text">
 							<span style="margin-left: 5px; margin-top: 2px">%</span>
 						</div>
+						
+						[START tax_error]
+						<div id="divProductName" class="formDivPlaceholder formError">
+							<span style="margin-bottom: 8px">U heeft dit veld incorrect ingevuld, wanneer het BTW tarief bijvoorbeeld <b>19%</b> betreft vult u in <b>19</b></span>
+						</div>
+						[END tax_error]
 					</div>
 					
 					
-					<div style="margin: 20px 0 0 10px">
+					<div style="margin: 20px 0 0 0">
 						<h3 style="font-size: 13px">Gewicht</h3>
 						
 						{inputWeight}
@@ -299,7 +305,7 @@
 						<span style="width: 100%; margin-top: 2px; font-size: 11px">Laat dit veld leeg als u geen gebruik maakt van verzendkosten.</span>
 					</div>
 					
-					<div style="margin: 25px 0 0 10px">
+					<div style="margin: 25px 0 0 0">
 						<h3 style="font-size: 13px">Voorraadbeheer</h3>
 						
 						{inputUseStock}

@@ -48,7 +48,37 @@ class Product_model extends model {
     		
     	}
     	
+    	
+    	// Het gewicht wordt gecontroleerd indien nodig
+    	if (!empty($data['Product']['weight'])) {
+    		if (!is_numeric($data['Product']['weight'])) {
+    			$this -> validateErrors['Product']['weight'] = 'U heeft dit veld niet correct ingevuld. Voorbeeld: <strong>5kg</strong> wordt <strong>5000</strong>';
+    		}
+    	}
+    	
+    	
+    	// Het BTW tarief wordt gecontroleerd indien nodig
+    	if ($data['Product']['use_tax'] == 'true') {
+    		if (!is_numeric($data['Product']['tax']) || $data['Product']['tax'] > 100 || $data['Product']['tax'] < 0) {
+    			$this -> validateErrors['Product']['tax'] = 'Error';
+    		}
+    	}
+    	
     }
+    
+    
+    
+    function beforeSave($data) {
+    	
+    	// Het BTW tarief wordt bepaald
+    	if ($data['Product']['use_tax'] == 'false') {
+    		$data['Product']['tax'] = null;
+    	}
+
+    	return $data;
+    }
+    
+    
     
     
     function afterSave($data) {

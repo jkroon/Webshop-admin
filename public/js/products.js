@@ -193,6 +193,46 @@ function setOptions(bool) {
 	
 }
 
+function switchView(type) {
+	detailBtn = '#li_detailView';
+	listBtn = '#li_listView';
+
+	detailObj = '#detail_overview';
+	listObj = '#list_overview';
+
+	if (type == 'detail') {
+		if ($(detailObj).css('display') == 'none') {
+			$(detailBtn).addClass('viewAct');
+			$(listBtn).removeClass('viewAct');
+
+
+			$(listObj).fadeOut(450, function() {
+				$(detailObj).fadeIn(450);
+			});
+
+			$.ajax({
+				url: '/products/setview/detail/'
+			});
+		}
+	} else if (type == 'list') {
+		if ($(listObj).css('display') == 'none') {
+			$(listBtn).addClass('viewAct');
+			$(detailBtn).removeClass('viewAct');
+
+			$(detailObj).fadeOut(450, function() {
+				$(listObj).fadeIn(450);
+			});
+
+			$.ajax({
+				url: '/products/setview/none/'
+			});
+		}
+	}
+
+	return false;
+}
+
+
 function updateIndex() {
 	if (obj['success']) {
 		
