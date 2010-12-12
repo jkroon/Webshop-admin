@@ -1,0 +1,142 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.0.1
+-- http://www.phpmyadmin.net
+--
+-- Machine: localhost
+-- Genereertijd: 12 Dec 2010 om 23:42
+-- Serverversie: 5.1.36
+-- PHP-Versie: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Database: `webshop`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `categories`
+--
+
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` smallint(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  `label` varchar(20) NOT NULL,
+  `active` enum('false','true') DEFAULT 'false',
+  `parent_id` smallint(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `countries`
+--
+
+CREATE TABLE IF NOT EXISTS `countries` (
+  `id` smallint(3) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `options`
+--
+
+CREATE TABLE IF NOT EXISTS `options` (
+  `id` smallint(4) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  `value` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `orders`
+--
+
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` mediumint(6) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(35) DEFAULT NULL,
+  `insertion` varchar(10) DEFAULT NULL,
+  `lastname` varchar(35) DEFAULT NULL,
+  `country_id` smallint(3) NOT NULL,
+  `adress` varchar(35) DEFAULT NULL,
+  `zip_code` varchar(10) DEFAULT NULL,
+  `city` varchar(30) NOT NULL,
+  `phonenumber` varchar(20) DEFAULT NULL,
+  `email` varchar(120) NOT NULL,
+  `_firstname` varchar(35) NOT NULL,
+  `_insertion` varchar(10) NOT NULL,
+  `_lastname` varchar(35) NOT NULL,
+  `_adress` varchar(35) NOT NULL,
+  `_zip_code` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `products`
+--
+
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` smallint(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `description` text NOT NULL,
+  `price` decimal(7,2) DEFAULT NULL,
+  `use_options` enum('false','true') NOT NULL DEFAULT 'false',
+  `category_id` smallint(3) NOT NULL,
+  `stock` mediumint(5) NOT NULL,
+  `online` enum('false','true') NOT NULL DEFAULT 'false',
+  `weight` int(6) NOT NULL,
+  `tax` smallint(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=60 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `product_images`
+--
+
+CREATE TABLE IF NOT EXISTS `product_images` (
+  `id` mediumint(5) NOT NULL AUTO_INCREMENT,
+  `filename` varchar(50) DEFAULT NULL,
+  `product_id` mediumint(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `product_options`
+--
+
+CREATE TABLE IF NOT EXISTS `product_options` (
+  `id` smallint(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `product_id` mediumint(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `product_suboptions`
+--
+
+CREATE TABLE IF NOT EXISTS `product_suboptions` (
+  `id` mediumint(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL,
+  `price` decimal(7,2) DEFAULT NULL,
+  `type` tinyint(1) DEFAULT NULL,
+  `article_id` varchar(30) DEFAULT NULL,
+  `parent_id` mediumint(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
