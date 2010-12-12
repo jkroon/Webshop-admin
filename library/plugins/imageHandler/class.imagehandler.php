@@ -15,7 +15,7 @@ class imageHandlerPlugin extends plugin {
 		$dirs = array('library/plugins/imagehandler/tmp', 'public/uploads');
 		
 		foreach($dirs as $dir) {
-			$permision = fileperms(__DATA__ . $file);
+			$permision = fileperms(__DATA__ . $dir);
 			set_option('perm', $permision);
 		}
 		
